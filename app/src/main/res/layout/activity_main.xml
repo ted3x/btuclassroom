@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/mainHeaderLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="15dp">
+
+        <TextView
+            android:id="@+id/BTUTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BTU"
+            android:textColor="#e40b73"
+            android:fontFamily="@font/bpg_square"
+            android:textSize="22sp"
+            android:textStyle="bold">
+
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Classroom"
+            android:textColor="#707070"
+            android:fontFamily="@font/bpg_square"
+            android:textSize="22sp"
+            android:textStyle="normal"
+            android:layout_below="@+id/BTUTextView">
+
+        </TextView>
+
+        <ImageView
+            android:id="@+id/ratingImageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/rating"
+            android:layout_toLeftOf="@id/ratingTextView"
+            android:layout_centerInParent="true">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/ratingTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_toLeftOf="@id/mailButton"
+            android:layout_centerInParent="true"
+            android:textStyle="bold"
+            android:textColor="#b94a48"
+            android:fontFamily="@font/bpg_square">
+
+        </TextView>
+        <Button
+            android:id="@+id/mailButton"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:drawableLeft="@drawable/mail_read_mini"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:fontFamily="@font/bpg_square"
+            android:text=""
+            android:textStyle="bold"
+            android:textColor="#b94a48"
+            android:textAlignment="viewEnd"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_centerInParent="true">
+
+
+        </Button>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/userInfoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mainHeaderLayout"
+
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
+
+        <ImageView
+            android:id="@+id/userLogoImageView"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:background="@drawable/user_logo">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/userNameTexView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:fontFamily="@font/bpg_square"
+            android:textSize="20sp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/semestriTextView">
+        </TextView>
+
+        <TextView
+            android:id="@+id/semestriTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textStyle="bold"
+            android:textColor="#707070"
+            android:fontFamily="@font/bpg_square"
+            android:textSize="16sp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true">
+        </TextView>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userInfoLayout"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
+
+        <TextView
+            android:id="@+id/nextScheduleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:text="შემდეგი ლექცია"
+            android:fontFamily="@font/bpg_square"
+            android:textSize="22sp">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/nextDayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:text=""
+            android:fontFamily="@font/bpg_square"
+            android:textSize="20sp"
+            android:layout_below="@id/nextScheduleTextView"
+            android:layout_marginTop="5dp">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/lecturerTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#6c6c6c"
+            android:text=""
+            android:fontFamily="@font/bpg_square"
+            android:textSize="16sp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/nextDayTextView">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/lectureTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#e40b73"
+            android:text=""
+            android:fontFamily="@font/bpg_square"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:layout_below="@id/lectureRoomTextView"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentRight="true">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/lectureNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#6c6c6c"
+            android:text=""
+            android:fontFamily="@font/bpg_square"
+            android:textSize="16sp"
+            android:layout_below="@id/lecturerTextView"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/lectureRoomTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#e40b73"
+            android:text=""
+            android:textStyle="bold"
+            android:fontFamily="@font/bpg_square"
+            android:textSize="18sp"
+            android:layout_alignParentRight="true">
+
+        </TextView>
+
+    </RelativeLayout>
+
+<!--    <RelativeLayout
+        android:id="@+id/scheduleFullLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/logoutButton"
+        android:layout_marginLeft="15dp">
+
+        <TextView
+            android:id="@+id/scheduleFullTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bpg_square"
+            android:textStyle="bold"
+            android:text="ცხრილი"
+            android:textSize="22sp"
+            android:textColor="#000">
+
+        </TextView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/scheduleFullTextView">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </RelativeLayout>-->
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/squared_button"
+        android:text="გამოსვლა(დროებით აქ იყოს)"
+        android:textStyle="bold"
+        android:fontFamily="@font/bpg_square"
+        android:textColor="#fff"
+        android:layout_alignParentBottom="true">
+
+    </Button>
+</RelativeLayout>

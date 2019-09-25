@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/mailLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:background="#9c9c9c"
+        android:clickable="true">
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/mailAuthorTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="მაია ლამაზოშვილი"
+            android:fontFamily="@font/bpg_square"
+            android:textColor="#000"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="2" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/mailNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="შემოდგომის სემესტრის საგნების შესახებ"
+            android:fontFamily="@font/bpg_square"
+            android:textColor="#000"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="2"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/mailTimeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="2019-09-19 23:59"
+            android:fontFamily="@font/bpg_square"
+            android:textColor="#000"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="2"/>
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>
