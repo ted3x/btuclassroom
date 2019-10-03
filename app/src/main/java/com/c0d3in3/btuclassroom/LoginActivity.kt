@@ -20,6 +20,13 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.util.*
 import kotlin.concurrent.schedule
+import android.os.StrictMode
+import androidx.core.app.ComponentActivity
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
 
 
 class LoginActivity : AppCompatActivity() {
@@ -28,6 +35,10 @@ class LoginActivity : AppCompatActivity() {
     var autoLogin = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+
         var PRIVATE_MODE = 0
         val MY_PREFS = "MY_PREFS"
         val sharedPref: SharedPreferences = getSharedPreferences(MY_PREFS, PRIVATE_MODE)
@@ -139,6 +150,10 @@ class LoginActivity : AppCompatActivity() {
                         writeBooleanCache(this@LoginActivity, "firstTime", true)
                         writeStringCache(this@LoginActivity, "username", username)
                         writeStringCache(this@LoginActivity, "password", password)
+                        val data = GetWebData()
+                        data.getUserRating(this@LoginActivity, getStringCache(this@LoginActivity, "cookies"))
+                        data.getUserCredits(this@LoginActivity, getStringCache(this@LoginActivity, "cookies"))
+                        data.getUserImage(this@LoginActivity, getStringCache(this@LoginActivity, "cookies"))
 
                     }
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)

@@ -89,8 +89,7 @@
         <ImageView
             android:id="@+id/userLogoImageView"
             android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:background="@drawable/user_logo">
+            android:layout_height="120dp">
 
         </ImageView>
 

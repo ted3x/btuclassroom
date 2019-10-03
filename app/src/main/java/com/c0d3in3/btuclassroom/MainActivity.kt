@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.BitmapFactory
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -22,6 +23,11 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import android.os.Handler
 import android.widget.Toast
+import androidx.core.app.ComponentActivity
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import java.sql.Blob
 
 
 class MainActivity : AppCompatActivity() {
@@ -45,21 +51,20 @@ class MainActivity : AppCompatActivity() {
         val sharedPref: SharedPreferences = getSharedPreferences("MY_PREFS", 0)
         if(getBooleanCache(this, "firstTime")){
             createSchedule()
-            val data = GetWebData()
-            data.getUserRating(this, getStringCache(this, "cookies"))
-            data.getUserCredits(this, getStringCache(this, "cookies"))
         }
         else{
+            updateUI()
             userNameTexView.text = getStringCache(this, "userIdentity")
             startRepeatingTask()
-            updateUI()
         }
         if(networkAvaliable(this)) sendRequest("https://classroom.btu.edu.ge/ge/student/me/courses", getStringCache(this, "cookies"))
         logoutButton.setOnClickListener {
             sharedPref.edit().clear().apply()
             val db = database.writableDatabase
             db.dropTable("Schedule", true)
+            db.dropTable("userInfo", true)
             stopRepeatingTask()
+            db.close()
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
@@ -112,6 +117,12 @@ class MainActivity : AppCompatActivity() {
                     writeBooleanCache(this@MainActivity, "firstTime", false)
                     setUserCredits()
                     ratingTextView.text = getLongCache(this@MainActivity, "userRating").toString()
+
+                    val data = UserInfo(this@MainActivity).getInfo()
+                    val img = data[0]._userImage
+                    val bitmaps = BitmapFactory.decodeByteArray(img, 0, img.size)
+                    userLogoImageView.setImageBitmap(bitmaps)
+
                 }
                 getMail()
 
@@ -160,6 +171,7 @@ class MainActivity : AppCompatActivity() {
             "https://classroom.btu.edu.ge/ge/student/me/schedule",
             getStringCache(this, "cookies")
         )
+        db.close()
     }
 
     private fun getSchedule(url: String, cookies: String) {
@@ -215,6 +227,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         updateNextLectureUI()
+        db.close()
     }
 
     data class Schedules(val id: Long, val time: String, val lecture: String, val room: String, val lecturer : String)
@@ -290,7 +303,13 @@ class MainActivity : AppCompatActivity() {
         setUserCredits()
         updateNextLectureUI()
 
+        val data = UserInfo(this).getInfo()
+        val img = data[0]._userImage
+        val bitmaps = BitmapFactory.decodeByteArray(img, 0, img.size)
+        userLogoImageView.setImageBitmap(bitmaps)
+
         ratingTextView.text = getLongCache(this, "userRating").toString()
     }
 
 }
+
