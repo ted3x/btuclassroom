@@ -6,12 +6,14 @@ import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_mail_list.*
 import org.json.JSONObject
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import java.io.IOException
 import java.util.HashMap
 
 class MailListActivity : AppCompatActivity() {
@@ -51,6 +53,7 @@ class MailListActivity : AppCompatActivity() {
     fun sendRequest(url: String,cookies: String) {
         class DemoTask: AsyncTask<Void, Void, Void>() {
             override fun doInBackground(vararg params: Void): Void? {
+                val updateTask = this
                 val jsonObject = JSONObject(cookies)
                 val outputMap = HashMap<String, String>()
                 val keysItr = jsonObject.keys()
@@ -59,13 +62,19 @@ class MailListActivity : AppCompatActivity() {
                     val value = jsonObject.get(key) as String
                     outputMap[key] = value
                 }
-                dataDoc = Jsoup.connect(url).cookies(outputMap).method(Connection.Method.GET).execute()
-                parsedData = dataDoc.parse()
+                try{
+                    dataDoc = Jsoup.connect(url).cookies(outputMap).method(Connection.Method.GET).execute()
+                }
+                catch (e: IOException){
+                    updateTask.cancel(true)
+                    displayError(this@MailListActivity, "ვერ მოხერხდა საიტთან დაკავშირება! სცადეთ თავიდან.")
+                }
 
                 return null
             }
 
             override fun onPostExecute(result: Void?) {
+                parsedData = dataDoc.parse()
                 val main = parsedData.select("tr[class]")
                 main.forEach{ele ->
                     var arg = ele.select("td")

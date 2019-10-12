@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -27,6 +28,10 @@ import androidx.core.app.ComponentActivity
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.text.Html
+import androidx.appcompat.app.ActionBarDrawerToggle
+import kotlinx.android.synthetic.main.loading.*
+import java.io.IOException
 import java.sql.Blob
 
 
@@ -35,15 +40,25 @@ class MainActivity : AppCompatActivity() {
     private val INTERVAL = 1000 * 60 * 10
     lateinit var dataDoc : Connection.Response
     lateinit var parsedData : Document
+    private var mailNumber = "0"
+
+
 
     //private var scheduleList = mutableListOf<Schedules>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         setContentView(R.layout.activity_main)
-
-
+        setSupportActionBar(toolbar)
+        val toggle = ActionBarDrawerToggle(
+            this, drawerLayout, toolbar, 0, 0
+        )
+        toggle.isDrawerIndicatorEnabled = true
+        actionBar?.setDisplayHomeAsUpEnabled(true)
         init()
+
     }
 
     private fun init(){
@@ -84,6 +99,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 else {
                     val intent = Intent(this, MailListActivity::class.java)
+                    writeLongCache(this, "mailNumber", mailNumber.toLong())
                     startActivity(intent)
                     finish()
                 }
@@ -94,6 +110,7 @@ class MainActivity : AppCompatActivity() {
     private fun sendRequest(url: String, cookies: String) {
         class DemoTask: AsyncTask<Void, Void, Void>() {
             override fun doInBackground(vararg params: Void): Void? {
+                val updateTask = this
                 val jsonObject = JSONObject(cookies)
                 val outputMap = HashMap<String, String>()
                 val keysItr = jsonObject.keys()
@@ -102,26 +119,38 @@ class MainActivity : AppCompatActivity() {
                     val value = jsonObject.get(key) as String
                     outputMap[key] = value
                 }
-                dataDoc = Jsoup.connect(url).cookies(outputMap).method(Connection.Method.GET).execute()
-                parsedData = dataDoc.parse()
 
-
+                try{
+                    dataDoc = Jsoup.connect(url).cookies(outputMap).method(Connection.Method.GET).execute()
+                }
+                catch (e: IOException){
+                    updateTask.cancel(true)
+                    displayError(this@MainActivity, "ვერ მოხერხდა საიტთან დაკავშირება! სცადეთ თავიდან.")
+                }
                 return null
             }
 
             override fun onPostExecute(result: Void?) {
+                parsedData = dataDoc.parse()
                 if(getBooleanCache(this@MainActivity, "firstTime")){
                     val urlStr = parsedData.select("a[href=\"https://classroom.btu.edu.ge/ge/profile/index\"]")
                     userNameTexView.text = urlStr.text().toString()
                     writeStringCache(this@MainActivity, "userIdentity", urlStr.text().toString())
                     writeBooleanCache(this@MainActivity, "firstTime", false)
                     setUserCredits()
-                    ratingTextView.text = getLongCache(this@MainActivity, "userRating").toString()
+                    //ratingTextView.text = getLongCache(this@MainActivity, "userRating").toString()
 
                     val data = UserInfo(this@MainActivity).getInfo()
                     val img = data[0]._userImage
                     val bitmaps = BitmapFactory.decodeByteArray(img, 0, img.size)
                     userLogoImageView.setImageBitmap(bitmaps)
+
+                    val calendar = Calendar.getInstance()
+                    val curYear = calendar.get(Calendar.YEAR)
+
+                    yearTextView.text = curYear.toString() + " - " + (calendar.get(Calendar.YEAR) +1).toString()
+
+                    BTUTextView.text = Html.fromHtml("<b>" + "BTU" + "</b>" + " <font color='#000'>Classroom")
 
                 }
                 getMail()
@@ -136,22 +165,25 @@ class MainActivity : AppCompatActivity() {
     fun setUserCredits(){
         val userCredits = getLongCache(this@MainActivity, "userCredits")
         if(userCredits < 60){
-            semestriTextView.text = "I სემესტრი"
+            semestriTextView.text = "I კურსი"
         }
         if(userCredits in 60..119){
-            semestriTextView.text = "II სემესტრი"
+            semestriTextView.text = "II კურსი"
         }
         if(userCredits in 120..179){
-            semestriTextView.text = "III სემესტრი"
+            semestriTextView.text = "III კურსი"
         }
         if(userCredits in 180..240){
-            semestriTextView.text = "IV სემესტრი"
+            semestriTextView.text = "IV კურსი"
         }
     }
 
     private fun getMail(){
-        val mailNumber = parsedData.select("a[href=\"https://classroom.btu.edu.ge/ge/messages\"]").select("span").text()
-        mailButton.text = mailNumber
+        mailNumber = parsedData.select("a[href=\"https://classroom.btu.edu.ge/ge/messages\"]").select("span").text()
+        if(getLongCache(this, "mailNumber") < mailNumber.toLong()){
+            val unreadDrawable = resources.getDrawable( R.drawable.ic_mails_unread )
+            mailButton.setCompoundDrawablesWithIntrinsicBounds(unreadDrawable,null, null, null)
+        }
     }
 
     private fun createSchedule() {
@@ -230,14 +262,12 @@ class MainActivity : AppCompatActivity() {
         db.close()
     }
 
-    data class Schedules(val id: Long, val time: String, val lecture: String, val room: String, val lecturer : String)
-
     fun updateNextLectureUI(){
         val schedule = Schedule(this).getSchedule()
         val lecture = getClosestLecture(this)
         nextDayTextView.text = getDayString(schedule[lecture]._day)
         lectureRoomTextView.text = schedule[lecture]._room
-        lecturerTextView.text = schedule[lecture]._lecturer
+        lecturerTextView.text = Html.fromHtml("<font color='#cccccc'>ლექტორი:<br>" + "<font color='#666666'>" + schedule[lecture]._lecturer)
         lectureNameTextView.text = schedule[lecture]._lecture.substring(9)
         lectureTimeTextView.text = schedule[lecture]._time.substring(0,5)
 
@@ -303,12 +333,19 @@ class MainActivity : AppCompatActivity() {
         setUserCredits()
         updateNextLectureUI()
 
+        val calendar = Calendar.getInstance()
+        val curYear = calendar.get(Calendar.YEAR)
+
+        yearTextView.text = curYear.toString() + " - " + (calendar.get(Calendar.YEAR) +1).toString()
+
+        BTUTextView.text = Html.fromHtml("<b>" + "BTU" + "</b>" + " <font color='#000'>Classroom")
+
         val data = UserInfo(this).getInfo()
         val img = data[0]._userImage
         val bitmaps = BitmapFactory.decodeByteArray(img, 0, img.size)
         userLogoImageView.setImageBitmap(bitmaps)
 
-        ratingTextView.text = getLongCache(this, "userRating").toString()
+        //ratingTextView.text = getLongCache(this, "userRating").toString()
     }
 
 }

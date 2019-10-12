@@ -25,8 +25,7 @@ import androidx.core.app.ComponentActivity
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
-
+import java.io.IOException
 
 
 class LoginActivity : AppCompatActivity() {
@@ -100,29 +99,36 @@ class LoginActivity : AppCompatActivity() {
             lateinit var doc : Connection.Response
             lateinit var parsedDoc : Document
             override fun doInBackground(vararg params: Void): Void? {
-                if(code != null){
-                    doc = Jsoup.connect("https://classroom.btu.edu.ge/ge/login/trylogin")
-                        .data("username", username)
-                        .data("password", password)
-                        .data("code", code)
-                        .data(mCookies)
-                        // and other hidden fields which are being passed in post request.
-                        .userAgent("Mozilla")
-                        .method(Connection.Method.POST)
-                        .execute()
+                val task = this
+                try{
+                    if(code != null){
+                        doc = Jsoup.connect("https://classroom.btu.edu.ge/ge/login/trylogin")
+                            .data("username", username)
+                            .data("password", password)
+                            .data("code", code)
+                            .data(mCookies)
+                            // and other hidden fields which are being passed in post request.
+                            .userAgent("Mozilla")
+                            .method(Connection.Method.POST)
+                            .execute()
 
-                    println(code)
-                }
-                else{
-                    doc = Jsoup.connect("https://classroom.btu.edu.ge/ge/login/trylogin")
-                        .data("username", username)
-                        .data("password", password)
-                        // and other hidden fields which are being passed in post request.
-                        .userAgent("Mozilla")
-                        .method(Connection.Method.POST)
-                        .execute()
+                    }
+                    else{
+                        doc = Jsoup.connect("https://classroom.btu.edu.ge/ge/login/trylogin")
+                            .data("username", username)
+                            .data("password", password)
+                            // and other hidden fields which are being passed in post request.
+                            .userAgent("Mozilla")
+                            .method(Connection.Method.POST)
+                            .execute()
 
+                    }
                 }
+                catch (e: IOException){
+                    task.cancel(true)
+                    displayError(this@LoginActivity, "ვერ მოხერხდა საიტთან დაკავშირება! სცადეთ თავიდან.")
+                }
+
                 return null
             }
 

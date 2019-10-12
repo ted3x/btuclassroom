@@ -3,9 +3,12 @@ package com.c0d3in3.btuclassroom
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
+import android.os.Handler
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.util.*
 
+val messageHandler = Handler()
 
 fun writeStringCache(context: Context, name : String, value : String){
     var PRIVATE_MODE = 0
@@ -126,4 +129,9 @@ fun networkAvaliable(activity: AppCompatActivity):Boolean{
     val connectivityManager=activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val networkInfo=connectivityManager.activeNetworkInfo
     return  networkInfo!=null && networkInfo.isConnected
+}
+fun displayError(context : Context, errorText: String) {
+    val doDisplayError =
+        Runnable { Toast.makeText(context, errorText, Toast.LENGTH_SHORT).show() }
+    messageHandler.post(doDisplayError)
 }
