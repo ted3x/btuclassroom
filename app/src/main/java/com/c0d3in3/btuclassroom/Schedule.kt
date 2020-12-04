@@ -36,7 +36,3 @@ class Schedule(val context: Context) {
     }
 }
 
-@Parcelize
-data class ScheduleData(val _id: Int, val _day : Int, val _room : String, val _time : String,
-                        val _lecture : String, val _group : String, val _lecturer : String): Parcelable{
-}

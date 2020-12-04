@@ -1,4 +1,4 @@
-package com.c0d3in3.btuclassroom
+package com.c0d3in3.btuclassroom.data.remote
 
 import android.content.Context
 import android.os.AsyncTask
@@ -6,15 +6,12 @@ import org.json.JSONObject
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import android.R.attr.data
 import android.graphics.BitmapFactory
-import android.view.View
-import kotlinx.android.synthetic.main.activity_login.*
-import android.R.attr.bitmap
 import android.graphics.Bitmap.CompressFormat
 import android.graphics.Bitmap
 import java.io.ByteArrayOutputStream
 import com.c0d3in3.btuclassroom.DatabaseHelper
+import com.c0d3in3.btuclassroom.writeLongCache
 import org.jetbrains.anko.db.*
 
 
@@ -45,7 +42,11 @@ class GetWebData{
                 parsedData = dataDoc.parse()
                 val userCreditsString = parsedData.select("ul[class=inline]")[0].select("li").text()
                 val userCredits = userCreditsString.replace("[^0-9]".toRegex(), "").toLong()
-                writeLongCache(context, "userCredits", userCredits)
+                writeLongCache(
+                    context,
+                    "userCredits",
+                    userCredits
+                )
                 super.onPostExecute(result)
             }
         }
@@ -75,10 +76,18 @@ class GetWebData{
                 val userRatingString = parsedData.select("div[class=col-md-18]").text()
                 val userRating = userRatingString.replace("[^0-9]".toRegex(), "")
                 if(userRating.length < 2){
-                    writeLongCache(context, "userRating", userRating.substring(0,1).toLong())
+                    writeLongCache(
+                        context,
+                        "userRating",
+                        userRating.substring(0, 1).toLong()
+                    )
                 }
                 else {
-                    writeLongCache(context, "userRating", userRating.substring(0, 2).toLong())
+                    writeLongCache(
+                        context,
+                        "userRating",
+                        userRating.substring(0, 2).toLong()
+                    )
                 }
                 super.onPostExecute(result)
             }

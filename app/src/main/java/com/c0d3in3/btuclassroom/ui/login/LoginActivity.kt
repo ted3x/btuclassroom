@@ -1,17 +1,14 @@
-package com.c0d3in3.btuclassroom
+package com.c0d3in3.btuclassroom.ui.login
 
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
-import android.net.ConnectivityManager
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isGone
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.loading.*
@@ -21,52 +18,15 @@ import org.jsoup.nodes.Document
 import java.util.*
 import kotlin.concurrent.schedule
 import android.os.StrictMode
-import androidx.core.app.ComponentActivity
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.c0d3in3.btuclassroom.*
+import com.c0d3in3.btuclassroom.data.remote.GetWebData
+import com.c0d3in3.btuclassroom.ui.dashboard.DashboardActivity
+import com.c0d3in3.btuclassroom.utils.networkAvaliable
 import java.io.IOException
 
 
 class LoginActivity : AppCompatActivity() {
 
-    lateinit var mCookies : MutableMap<String, String>
-    var autoLogin = false
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-        StrictMode.setThreadPolicy(policy)
-
-        var PRIVATE_MODE = 0
-        val MY_PREFS = "MY_PREFS"
-        val sharedPref: SharedPreferences = getSharedPreferences(MY_PREFS, PRIVATE_MODE)
-        val editor = sharedPref.edit()
-        editor.remove("cookies")
-        editor.apply()
-        if (getStringCache(this@LoginActivity,"username").isNotEmpty()) {
-            if(networkAvaliable(this)){
-                setContentView(R.layout.loading)
-                autoLogin = true
-                Timer().schedule(3000) {
-                    sendRequest(
-                        getStringCache(this@LoginActivity, "username"),
-                        getStringCache(this@LoginActivity,"password"), null)
-                }
-            }
-            else{
-                setContentView(R.layout.loading)
-                loadingTextView.text = "მიმდინარეობს cache მეხსიერების ჩატვირთვა!\n(offline mode)"
-                Timer().schedule(3000) {
-                    makeOfflineLogIn()
-                }
-            }
-        }
-        else {
-            setContentView(R.layout.activity_login)
-            init()
-        }
-    }
 
     private fun init(){
         loginButton.setOnClickListener {
@@ -126,7 +86,10 @@ class LoginActivity : AppCompatActivity() {
                 }
                 catch (e: IOException){
                     task.cancel(true)
-                    displayError(this@LoginActivity, "ვერ მოხერხდა საიტთან დაკავშირება! სცადეთ თავიდან.")
+                    displayError(
+                        this@LoginActivity,
+                        "ვერ მოხერხდა საიტთან დაკავშირება! სცადეთ თავიდან."
+                    )
                 }
 
                 return null
@@ -150,19 +113,51 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this@LoginActivity, "მითითებული ინფორმაცია არასწორია!", Toast.LENGTH_SHORT).show()
                 }
                 else{
-                    writeStringCache(this@LoginActivity, "cookies", doc.cookies().toString())
+                    writeStringCache(
+                        this@LoginActivity,
+                        "cookies",
+                        doc.cookies().toString()
+                    )
                     if(!autoLogin)
                     {
-                        writeBooleanCache(this@LoginActivity, "firstTime", true)
-                        writeStringCache(this@LoginActivity, "username", username)
-                        writeStringCache(this@LoginActivity, "password", password)
-                        val data = GetWebData()
-                        data.getUserRating(this@LoginActivity, getStringCache(this@LoginActivity, "cookies"))
-                        data.getUserCredits(this@LoginActivity, getStringCache(this@LoginActivity, "cookies"))
-                        data.getUserImage(this@LoginActivity, getStringCache(this@LoginActivity, "cookies"))
+                        writeBooleanCache(
+                            this@LoginActivity,
+                            "firstTime",
+                            true
+                        )
+                        writeStringCache(
+                            this@LoginActivity,
+                            "username",
+                            username
+                        )
+                        writeStringCache(
+                            this@LoginActivity,
+                            "password",
+                            password
+                        )
+                        val data =
+                            GetWebData()
+                        data.getUserRating(this@LoginActivity,
+                            getStringCache(
+                                this@LoginActivity,
+                                "cookies"
+                            )
+                        )
+                        data.getUserCredits(this@LoginActivity,
+                            getStringCache(
+                                this@LoginActivity,
+                                "cookies"
+                            )
+                        )
+                        data.getUserImage(this@LoginActivity,
+                            getStringCache(
+                                this@LoginActivity,
+                                "cookies"
+                            )
+                        )
 
                     }
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    val intent = Intent(this@LoginActivity, DashboardActivity::class.java)
                     startActivity(intent)
                     finish()
                 }
@@ -203,7 +198,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun makeOfflineLogIn(){
-        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        val intent = Intent(this@LoginActivity, DashboardActivity::class.java)
         startActivity(intent)
         finish()
     }

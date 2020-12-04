@@ -3,10 +3,6 @@ package com.c0d3in3.btuclassroom
 import android.content.Context
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-import org.jetbrains.anko.db.MapRowParser
-import org.jetbrains.anko.db.select
-import java.sql.Blob
-
 import java.util.*
 
 class UserInfo(val context: Context) {

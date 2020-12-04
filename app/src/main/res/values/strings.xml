@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">BTU Classroom</string>
-    <string name="navigation_drawer_open">"OPEN</string>
-    <string name="navigation_drawer_close">"CLOSE</string>
+    <string name="btu_classroom">BTU Classroom</string>
+    <string name="next_lecture">შემდეგი ლექცია</string>
+    <string name="copyright">(c) Tedo Manvelidze 2019</string>
+    <string name="authorize">ავტორიზაცია</string>
+    <string name="email_or_id_number">ელ-ფოსტა ან პირადი ნომერი</string>
+    <string name="password">პაროლი</string>
+    <string name="captcha_code">კოდი</string>
 </resources>

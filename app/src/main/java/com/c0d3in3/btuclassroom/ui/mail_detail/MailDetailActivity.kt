@@ -1,17 +1,20 @@
-package com.c0d3in3.btuclassroom
+package com.c0d3in3.btuclassroom.ui.mail_detail
 
 import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_mail.*
+import com.c0d3in3.btuclassroom.ui.mail.MailListActivity
+import com.c0d3in3.btuclassroom.R
+import com.c0d3in3.btuclassroom.getStringCache
+import kotlinx.android.synthetic.main.activity_detail_mail.*
 import org.json.JSONObject
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.util.HashMap
 
-class MailActivity : AppCompatActivity() {
+class MailDetailActivity : AppCompatActivity() {
 
 
     lateinit var dataDoc : Connection.Response
@@ -19,13 +22,16 @@ class MailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_mail)
+        setContentView(R.layout.activity_detail_mail)
 
         init()
     }
 
     private fun init(){
-        sendRequest(getStringCache(this, "mailURL"), getStringCache(this, "cookies"))
+        sendRequest(
+            getStringCache(this, "mailURL"),
+            getStringCache(this, "cookies")
+        )
     }
 
 
