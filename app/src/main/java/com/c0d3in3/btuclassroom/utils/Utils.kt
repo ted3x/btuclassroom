@@ -2,13 +2,18 @@ package com.c0d3in3.btuclassroom.utils
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Handler
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.c0d3in3.btuclassroom.App
+import java.util.*
 
 
-
-fun getDayInt(day : String) : Int{
-    return when(day){
+fun getDayInt(day: String): Int {
+    return when (day) {
         "ორშაბათი" -> 2
         "სამშაბათი" -> 3
         "ოთხშაბათი" -> 4
@@ -20,8 +25,8 @@ fun getDayInt(day : String) : Int{
     }
 }
 
-fun getDayString(day : Int) : String{
-    return when(day){
+fun getDayString(day: Int): String {
+    return when (day) {
         2 -> "ორშაბათი"
         3 -> "სამშაბათი"
         4 -> "ოთხშაბათი"
@@ -33,33 +38,29 @@ fun getDayString(day : Int) : String{
     }
 }
 
-//fun getClosestLecture(context: Context) : Int{
-//    var dif = -10
-//    var nextLectureDay = 0
-//    val data = Schedule(context)
-//    val schedules = data.getSchedule()
-//    val calendar = Calendar.getInstance()
-//    val day = calendar.get(Calendar.DAY_OF_WEEK)
-//    val hour = calendar.get(Calendar.HOUR_OF_DAY)
-//    for (_day in 0 until schedules.size) {
-//        if (day == schedules[_day]._day) {
-//            if (hour < schedules[_day]._time.substring(0, 2).toInt()) {
-//                nextLectureDay = _day
-//                break
-//            }
-//        }
-//        else {
-//            if(dif < day-schedules[_day]._day && schedules[_day]._day > day) {
-//                dif = day - schedules[_day]._day
-//                nextLectureDay = _day
-//            }
-//        }
-//    }
-//    return nextLectureDay
-//}
-
-fun networkAvaliable(activity: AppCompatActivity):Boolean{
-    val connectivityManager=activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    val networkInfo=connectivityManager.activeNetworkInfo
-    return  networkInfo!=null && networkInfo.isConnected
+fun isNetworkAvailable(): Boolean {
+    val connectivityManager =
+        App.instance.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val nw = connectivityManager.activeNetwork
+        val actNw = connectivityManager.getNetworkCapabilities(nw)
+        return if (actNw == null) false
+        else {
+            when {
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ->
+                    true
+                else -> false
+            }
+        }
+    } else {
+        val nwInfo = connectivityManager.activeNetworkInfo
+        return nwInfo.isConnected
+    }
 }
+
+fun Context.toast(message: String){
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
+fun View.isVisible() = this.visibility == View.VISIBLE

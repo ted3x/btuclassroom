@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.c0d3in3.btuclassroom.utils.toast
 
-abstract class BaseFragment<VM : ViewModel> : Fragment() {
+abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
 
     protected var viewModel : VM? = null
     protected open var viewModelToken: Class<VM>? = null
@@ -36,8 +40,17 @@ abstract class BaseFragment<VM : ViewModel> : Fragment() {
     }
 
 
-    open fun onBindViewModel(viewModel: VM) {}
+    @CallSuper
+    open fun onBindViewModel(viewModel: VM) {
+        viewModel.message.observe(viewLifecycleOwner, Observer { message->
+            requireContext().toast(message)
+        })
+    }
 
     private fun providerViewModel() =
         if (viewModelToken != null) ViewModelProvider(this)[viewModelToken!!] else null
+
+    protected fun navigate(actionId: Int, bundle: Bundle? = null){
+        findNavController().navigate(actionId, bundle)
+    }
 }

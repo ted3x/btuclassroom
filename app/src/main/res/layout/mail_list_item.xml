@@ -1,59 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mailLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <LinearLayout
-        android:id="@+id/mailLayout"
-        android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/mailSenderTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp"
-        android:background="#9c9c9c"
-        android:clickable="true">
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/bpg_square"
+        tools:text="@string/sender"
+        android:textColor="#000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
-            android:layout_marginTop="10dp"
-            android:id="@+id/mailAuthorTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:text="მაია ლამაზოშვილი"
-            android:fontFamily="@font/bpg_square"
-            android:textColor="#000"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="2" />
+    <TextView
+        android:id="@+id/mailTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bpg_square"
+        tools:text="@string/title"
+        android:textColor="#000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/mailSenderTextView" />
 
-        <TextView
-            android:layout_marginTop="10dp"
-            android:id="@+id/mailNameTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:text="შემოდგომის სემესტრის საგნების შესახებ"
-            android:fontFamily="@font/bpg_square"
-            android:textColor="#000"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="2"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
-
-        <TextView
-            android:layout_marginTop="10dp"
-            android:id="@+id/mailTimeTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:text="2019-09-19 23:59"
-            android:fontFamily="@font/bpg_square"
-            android:textColor="#000"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="2"/>
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/mailDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:fontFamily="@font/bpg_square"
+        tools:text="@string/date"
+        android:textColor="#000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/mailSenderTextView" />
 
 
-
-
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
