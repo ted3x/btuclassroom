@@ -6,6 +6,7 @@ import androidx.lifecycle.lifecycleScope
 import com.c0d3in3.btuclassroom.App
 import com.c0d3in3.btuclassroom.R
 import com.c0d3in3.btuclassroom.base.BaseFragment
+import com.c0d3in3.btuclassroom.utils.getDayString
 import com.c0d3in3.btuclassroom.utils.isNetworkAvailable
 import com.c0d3in3.btuclassroom.utils.toast
 import kotlinx.android.synthetic.main.dashboard_fragment.*
@@ -30,13 +31,21 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
         })
 
         viewModel.user.observe(viewLifecycleOwner, Observer {user->
-            println("user $user")
             userNameTexView.text = user.fullName
+            courseTextView.text = user.userCreditsText
             if(user.userImage != null) {
                 //TODO EXTENSION decodeAndSetImage
                 val bitmap = BitmapFactory.decodeByteArray(user.userImage, 0, user.userImage.size)
                 userImageView.setImageBitmap(bitmap)
             }
+        })
+
+        viewModel.nextLecture.observe(viewLifecycleOwner, Observer {
+            lectureNameTextView.text = it.shortLectureName
+            lecturerTextView.text = it.lecturer
+            lectureDayTextView.text = it.day?.let { it1 -> getDayString(it1) }
+            lectureTimeTextView.text = it.startTime
+            lectureRoomTextView.text = it.room
         })
     }
 

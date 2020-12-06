@@ -2,10 +2,14 @@ package com.c0d3in3.btuclassroom.data.remote
 
 import android.graphics.Bitmap
 import com.c0d3in3.btuclassroom.App
+import com.c0d3in3.btuclassroom.R
+import com.c0d3in3.btuclassroom.model.Lecture
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import java.io.ByteArrayOutputStream
 import com.c0d3in3.btuclassroom.model.Result
+import com.c0d3in3.btuclassroom.resource_provider.ResourceProvider
+import com.c0d3in3.btuclassroom.utils.getDayInt
 import kotlinx.coroutines.*
 import java.io.IOException
 
@@ -124,10 +128,44 @@ object NetworkHandler {
         return userFullname
     }
 
-    private fun getBitmapAsByteArray(bitmap: Bitmap): ByteArray {
-        val outputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream)
-        return outputStream.toByteArray()
+    suspend fun getLectures(): List<Lecture> {
+        val lecturesList = mutableListOf<Lecture>()
+        val scope = CoroutineScope(Dispatchers.IO).async {
+            when (val result =
+                getDocument(SCHEDULE_URL, NetworkMethod.GET, null, true)) {
+                is Result.Success -> {
+                    var day = ""
+                    val parsedDoc = result.data.parse()
+                    for (tag in parsedDoc.allElements) {
+                        if (tag.className() == "info") {
+                            day = tag.text()
+                            tag.remove()
+                        }
+                        if (tag.className() == "tip") {
+                            val scheduleValues = ArrayList<String>()
+                            for (lecture in 0 until tag.select("td").size - 1) {
+                                scheduleValues.add(tag.select("td")[lecture].text())
+                            }
+                            val lectureTime = scheduleValues[0].split(" - ")
+                            val lecture = Lecture(
+                                day = getDayInt(day),
+                                startTime = lectureTime[0],
+                                endTime = lectureTime[1],
+                                room = scheduleValues[1],
+                                lecture = scheduleValues[2],
+                                group = scheduleValues[3],
+                                lecturer = scheduleValues[4]
+                            )
+                            lecturesList.add(lecture)
+                            tag.remove()
+                        }
+                        if (tag.className() == "info" && tag.text() != day) continue
+                    }
+                }
+                is Result.Error -> ResourceProvider.getResourceString(R.string.we_couldnt_get_your_lectures_try_again)
+            }
+        }
+        scope.await()
+        return lecturesList
     }
-
 }

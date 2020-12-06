@@ -1,15 +1,13 @@
 package com.c0d3in3.btuclassroom.data.local
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
 import com.c0d3in3.btuclassroom.data.local.user.User
 import com.c0d3in3.btuclassroom.data.local.user.UserDao
-import com.c0d3in3.btuclassroom.data.local.schedule.Lecture
-import com.c0d3in3.btuclassroom.data.local.schedule.LectureDao
+import com.c0d3in3.btuclassroom.model.Lecture
 
-@Database(entities = [User::class, Lecture::class], version = 1)
+@Database(entities = [User::class], version = 1)
+@TypeConverters(LectureConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     companion object{
         private const val DATABASE_NAME = "BTUClassroom-DB"
@@ -20,5 +18,4 @@ abstract class AppDatabase : RoomDatabase() {
         ).build()
     }
     abstract fun userDao(): UserDao
-    abstract fun lecture() : LectureDao
 }

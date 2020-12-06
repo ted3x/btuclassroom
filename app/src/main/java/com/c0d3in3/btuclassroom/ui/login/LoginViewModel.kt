@@ -9,7 +9,7 @@ import com.c0d3in3.btuclassroom.Constants.PASSWORD
 import com.c0d3in3.btuclassroom.Constants.USERNAME
 import com.c0d3in3.btuclassroom.R
 import com.c0d3in3.btuclassroom.base.BaseViewModel
-import com.c0d3in3.btuclassroom.data.local.schedule.Lecture
+import com.c0d3in3.btuclassroom.model.Lecture
 import com.c0d3in3.btuclassroom.data.local.user.User
 import com.c0d3in3.btuclassroom.data.remote.NetworkHandler
 import com.c0d3in3.btuclassroom.data.remote.NetworkHandler.SCHEDULE_URL
@@ -24,20 +24,26 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel : BaseViewModel() {
 
+    companion object {
+        const val FIRST_TIME = "first_time"
+    }
+
     private val username: String
     private val password: String
     val captcha = MutableLiveData<ByteArray>()
     val auth = MutableLiveData<Boolean>()
     val loadingMessage = MutableLiveData<String>()
-
+    val firstTimeUser : Boolean
 
     init {
         SharedPreferencesHandler.removeSP(COOKIES)
         username = SharedPreferencesHandler.getStringSP(USERNAME)
         password = SharedPreferencesHandler.getStringSP(PASSWORD)
-        if (isNetworkAvailable()) {
-            if (username.isNotBlank() && password.isNotBlank()) logIn(username, password)
-        } else auth.value = true
+        firstTimeUser = SharedPreferencesHandler.getBooleanSP(FIRST_TIME)
+        if (username.isNotBlank() && password.isNotBlank()) {
+            if(isNetworkAvailable()) logIn(username, password)
+            else auth.value = true
+        }
     }
 
     fun logIn(username: String, password: String, captcha: String? = null) {
@@ -86,7 +92,8 @@ class LoginViewModel : BaseViewModel() {
                     } else {
                         App.cookies = result.data.cookies()
 
-                        addUser(username, password)
+                        if(firstTimeUser) addUser(username, password)
+                        else auth.postValue(true)
                     }
                 }
                 is Result.Error -> message.postValue(result.exception.message)
@@ -108,8 +115,8 @@ class LoginViewModel : BaseViewModel() {
     }
 
     private fun addUser(username: String, password: String) {
-        //SharedPreferencesHandler.writeStringSP(USERNAME, username)
-        //SharedPreferencesHandler.writeStringSP(PASSWORD, password)
+        SharedPreferencesHandler.writeStringSP(USERNAME, username)
+        SharedPreferencesHandler.writeStringSP(PASSWORD, password)
         viewModelScope.launch(Dispatchers.IO) {
             loadingMessage.postValue(getResourceString(R.string.we_are_getting_your_fullname))
             val fullname = NetworkHandler.getUserFullname()
@@ -124,53 +131,18 @@ class LoginViewModel : BaseViewModel() {
             val userImage = NetworkHandler.getUserImage()
 
             loadingMessage.postValue(getResourceString(R.string.we_are_getting_your_lectures))
-            createSchedule()
+            val lectures = NetworkHandler.getLectures()
 
             App.appDatabase.clearAllTables()
             val user = User(
-                uid = 0,
                 fullName = fullname,
                 userCredits = userCredits,
                 userRating = userRating,
-                userImage = userImage
+                userImage = userImage,
+                lectures = lectures
             )
             App.appDatabase.userDao().insertAll(user)
             auth.postValue(true)
-        }
-    }
-
-    private suspend fun createSchedule() {
-        val result =
-            NetworkHandler.getDocument(SCHEDULE_URL, NetworkMethod.GET, null, true)
-        when(result){
-            is Result.Success ->{
-                var day = ""
-                val parsedDoc = result.data.parse()
-                for (tag in parsedDoc.allElements) {
-                    if (tag.className() == "info") {
-                        day = tag.text()
-                        tag.remove()
-                    }
-                    if (tag.className() == "tip") {
-                        val scheduleValues = ArrayList<String>()
-                        for (lecture in 0 until tag.select("td").size - 1) {
-                            scheduleValues.add(tag.select("td")[lecture].text())
-                        }
-                        val schedule = Lecture(
-                            day = getDayInt(day),
-                            time = scheduleValues[0],
-                            room = scheduleValues[1],
-                            lecture = scheduleValues[2],
-                            group = scheduleValues[3],
-                            lecturer = scheduleValues[4]
-                        )
-                        App.lectureRepository.addLecture(schedule)
-                        tag.remove()
-                    }
-                    if (tag.className() == "info" && tag.text() != day) continue
-                }
-            }
-            is Result.Error -> message.postValue(getResourceString(R.string.we_couldnt_get_your_lectures_try_again))
         }
     }
 }

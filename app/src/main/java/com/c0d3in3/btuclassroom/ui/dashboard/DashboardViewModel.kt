@@ -3,58 +3,33 @@ package com.c0d3in3.btuclassroom.ui.dashboard
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.c0d3in3.btuclassroom.App
-import com.c0d3in3.btuclassroom.R
 import com.c0d3in3.btuclassroom.base.BaseViewModel
-import com.c0d3in3.btuclassroom.data.local.schedule.Lecture
+import com.c0d3in3.btuclassroom.model.Lecture
 import com.c0d3in3.btuclassroom.data.local.user.User
-import com.c0d3in3.btuclassroom.data.remote.NetworkHandler
-import com.c0d3in3.btuclassroom.data.remote.NetworkHandler.SCHEDULE_URL
-import com.c0d3in3.btuclassroom.data.remote.NetworkMethod
-import com.c0d3in3.btuclassroom.shared_preferences.SharedPreferencesHandler
-import com.c0d3in3.btuclassroom.utils.getDayInt
-import kotlinx.android.synthetic.main.dashboard_fragment.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
-import kotlin.collections.ArrayList
 
 class DashboardViewModel : BaseViewModel() {
 
-    companion object {
-        const val FIRST_COURSE = "I კურსი"
-        const val SECOND_COURSE = "II კურსი"
-        const val THIRD_COURSE = "III კურსი"
-        const val FOURTH_COURSE = "IV კურსი"
-        const val FIRST_TIME = "first_time"
-    }
 
-    val userCredits = MutableLiveData<String>()
+
     val user = MutableLiveData<User>()
     val nextLecture = MutableLiveData<Lecture>()
     val yearText = MutableLiveData<String>()
 
     init {
-
         viewModelScope.launch {
-            withContext(Dispatchers.IO) { user.postValue(App.userRepository.getUser())  }
-            getCredits()
+            val scope = viewModelScope.async(Dispatchers.IO) {
+                user.postValue(App.userRepository.getUser())
+            }
+            scope.await()
+            getNextLecture()
         }
-        //if (SharedPreferencesHandler.getBooleanSP(FIRST_TIME)) createSchedule()
-        //else getNextLecture()
-
         val calendar = Calendar.getInstance()
         val curYear = calendar.get(Calendar.YEAR)
         yearText.value = "$curYear - ${curYear + 1}"
-    }
-
-    private fun getCredits() {
-        when (user.value!!.userCredits) {
-            in 60..119 -> userCredits.value = SECOND_COURSE
-            in 120..179 -> userCredits.value = THIRD_COURSE
-            in 180..240 -> userCredits.value = FOURTH_COURSE
-            else -> userCredits.value = FIRST_COURSE
-        }
     }
 
     /*private fun getMail() {
@@ -67,7 +42,20 @@ class DashboardViewModel : BaseViewModel() {
         }
     }*/
 
-    private fun getNextLecture(){
-        val lectures = App.lectureRepository.getLectures()
+    private fun getNextLecture() {
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR)
+        val minute = calendar.get(Calendar.MINUTE)
+        val day = calendar.get(Calendar.DAY_OF_WEEK)
+        val lectures = user.value?.lectures
+        lectures?.forEach {
+            if (it.day != null && it.startTime != null) {
+                val parsed = it.startTime.split(":")
+                if((day < it.day) || (day == it.day && hour < parsed[0].toInt() && minute < parsed[1].toInt())){
+                    nextLecture.postValue(it)
+                    return
+                }
+            }
+        }
     }
 }

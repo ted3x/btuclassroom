@@ -66,7 +66,7 @@
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/semesterTextView"
+            android:id="@+id/courseTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -82,20 +82,20 @@
             android:id="@+id/yearTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/semesterTextView"
+            android:layout_below="@id/courseTextView"
             android:layout_marginTop="@dimen/dashboard_item_margin"
             android:fontFamily="@font/bpg_square"
             tools:text="2019-2020"
             android:textColor="#707070"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/semesterTextView"
+            app:layout_constraintTop_toBottomOf="@id/courseTextView"
             app:layout_constraintStart_toStartOf="@id/userNameTexView"/>
 
         <TextView
             android:layout_width="80dp"
             android:layout_height="25dp"
-            android:layout_below="@id/semesterTextView"
+            android:layout_below="@id/courseTextView"
             android:layout_marginEnd="@dimen/dashboard_item_margin"
             android:background="@drawable/money_bg"
             android:fontFamily="@font/bpg_square"
@@ -104,7 +104,7 @@
             android:textColor="#fff"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/userNameTexView"/>
+            app:layout_constraintBottom_toBottomOf="@id/yearTextView"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
