@@ -95,7 +95,7 @@ class LoginViewModel : BaseViewModel() {
                         else auth.postValue(true)
                     }
                 }
-                is Result.Error -> message.postValue(result.exception.message)
+                is Result.Error -> message.postValue(result.message)
             }
         }
     }
@@ -108,7 +108,7 @@ class LoginViewModel : BaseViewModel() {
                     App.cookies = result.data.cookies()
                     captcha.postValue(result.data.bodyAsBytes().inputStream().readBytes())
                 }
-                else -> message.postValue("Error while getting captcha")
+                is Result.Error -> message.postValue(result.message ?: "Error while getting captcha")
             }
         }
     }

@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream
 import com.c0d3in3.btuclassroom.model.Result
 import com.c0d3in3.btuclassroom.resource_provider.ResourceProvider
 import com.c0d3in3.btuclassroom.utils.getDayInt
+import com.c0d3in3.btuclassroom.utils.isNetworkAvailable
 import kotlinx.coroutines.*
 import java.io.IOException
 
@@ -32,6 +33,7 @@ object NetworkHandler {
         data: Map<String, String>? = null,
         includeCookies: Boolean = false
     ): Result<Connection.Response> {
+        if(!isNetworkAvailable()) return Result.Error(null, "ინტერნეტთან წვდომა არ გვაქვს : (")
         val doc = Jsoup.connect(url)
             .method(method.methodType)
             .userAgent("Mozilla")

@@ -11,4 +11,6 @@ object Constants {
     const val SECOND_COURSE = "II კურსი"
     const val THIRD_COURSE = "III კურსი"
     const val FOURTH_COURSE = "IV კურსი"
+
+    const val MAIL_MODEL_KEY = "mail_model"
 }

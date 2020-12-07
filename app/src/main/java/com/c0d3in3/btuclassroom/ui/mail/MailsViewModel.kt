@@ -42,7 +42,7 @@ class MailsViewModel : BaseViewModel() {
                     }
                     mails.postValue(list)
                 }
-                is Result.Error -> message.postValue(getResourceString(R.string.error_while_getting_mails))
+                is Result.Error -> message.postValue(result.message ?: getResourceString(R.string.error_while_getting_mails))
             }
         }
     }

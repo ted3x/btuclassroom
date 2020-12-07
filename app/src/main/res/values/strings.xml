@@ -31,4 +31,5 @@
     <string name="auth">ავტორიზაცია</string>
     <string name="mails">წერილები</string>
     <string name="error_while_getting_mails">მოხდა შეცდომება წერილების წამოღების დროს : (</string>
+    <string name="could_not_get_email_text">ვერ წამოვიღეთ წერილის ტექსტი : (</string>
 </resources>

@@ -1,7 +1,9 @@
 package com.c0d3in3.btuclassroom.ui.mail
 
 import android.graphics.drawable.Drawable
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
+import com.c0d3in3.btuclassroom.Constants.MAIL_MODEL_KEY
 import com.c0d3in3.btuclassroom.R
 import com.c0d3in3.btuclassroom.base.BaseFragment
 import com.c0d3in3.btuclassroom.ui.mail.adapter.MailAdapter
@@ -22,7 +24,8 @@ class MailsFragment : BaseFragment<MailsViewModel>() {
         super.onBindViewModel(viewModel)
 
         adapter = MailAdapter{
-
+            val bundle = bundleOf(MAIL_MODEL_KEY to it)
+            navigate(R.id.action_mailsFragment_to_mailDetailFragment, bundle)
         }
 
         mailRecyclerView.adapter = adapter

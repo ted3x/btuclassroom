@@ -13,45 +13,17 @@
 
 
         <TextView
-            android:id="@+id/btuTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="40dp"
-            android:fontFamily="@font/bpg_square"
-            android:text="@string/btu"
-            android:textColor="#e40b73"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/classroomTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:fontFamily="@font/bpg_square"
-            android:text="@string/classroom"
-            android:textColor="#707070"
-            android:textSize="22sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btuTextView" />
-
-        <TextView
             android:id="@+id/authorTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/classroomTextView"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/bpg_square"
             android:textColor="#000"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/classroomTextView"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="გამომგზავნი: დავით ყვავაძე"/>
 
         <TextView

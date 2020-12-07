@@ -2,6 +2,8 @@ package com.c0d3in3.btuclassroom.ui.mail_detail
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import androidx.lifecycle.Observer
+import com.c0d3in3.btuclassroom.Constants.MAIL_MODEL_KEY
 import com.c0d3in3.btuclassroom.R
 import com.c0d3in3.btuclassroom.base.BaseFragment
 import com.c0d3in3.btuclassroom.model.Mail
@@ -13,7 +15,6 @@ class MailDetailFragment : BaseFragment<MailDetailViewModel>() {
 
     override var viewModelToken: Class<MailDetailViewModel>? = MailDetailViewModel::class.java
 
-    //TODO SET TO TITLE OF MAIL
     override fun getTitle() = getString(R.string.mails)
     override fun isBackArrowEnabled() = true
     override fun getLayout() = R.layout.mail_detail_fragment
@@ -21,15 +22,21 @@ class MailDetailFragment : BaseFragment<MailDetailViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mail = arguments?.get("mail") as Mail
+        mail = arguments?.get(MAIL_MODEL_KEY) as Mail
+        viewModel?.setMail(mail)
     }
 
     override fun onBindViewModel(viewModel: MailDetailViewModel) {
         super.onBindViewModel(viewModel)
 
-        authorTextView.text = mail.author
-        dateTextView.text = mail.date
-        titleTextView.text = mail.title
-        //mailTextView.text = mail.text
+        viewModel.mail.observe(viewLifecycleOwner, Observer {mail ->
+            authorTextView.text = mail.author
+            dateTextView.text = mail.date
+            titleTextView.text = mail.title
+        })
+
+        viewModel.mailText.observe(viewLifecycleOwner, Observer{
+            mailTextView.text = it
+        })
     }
 }
