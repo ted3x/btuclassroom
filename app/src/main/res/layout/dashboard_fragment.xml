@@ -4,31 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
-
-    <TextView
-        android:id="@+id/btuTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:fontFamily="@font/bpg_square"
-        android:text="@string/btu_classroom"
-        android:textColor="@color/btu_pink_color"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <ImageButton
-        android:id="@+id/mailButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_mails"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textColor="#b94a48"/>
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/userInfoLayout"
@@ -37,7 +13,7 @@
         android:layout_marginHorizontal="@dimen/dashboard_item_margin"
         android:layout_marginTop="@dimen/dashboard_item_margin"
         app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btuTextView"
+        app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/curved_bg">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -113,7 +89,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/userInfoLayout"
-        android:layout_marginHorizontal="@dimen/dashboard_item_margin"
+        android:layout_marginHorizontal="@dimen/next_lecture_margin"
         android:layout_marginTop="@dimen/dashboard_item_margin"
         android:fontFamily="@font/bpg_square"
         app:layout_constraintStart_toStartOf="parent"
@@ -180,7 +156,7 @@
             android:fontFamily="@font/bpg_square"
             tools:text="ოთხშაბათი"
             android:textColor="#6c6c6c"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/lecturerTextView"/>
@@ -189,7 +165,6 @@
             android:id="@+id/lectureTimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_clock"
             android:fontFamily="@font/bpg_square"
             android:gravity="center"
             tools:text="13:00"
@@ -197,17 +172,17 @@
             app:layout_constraintTop_toBottomOf="@id/lectureDayTextView"
             android:textColor="@color/btu_pink_color"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_clock" />
 
-        <Button
+        <ImageButton
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="40dp"
             android:layout_height="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/lectureNameTextView"
-            app:layout_constraintBottom_toBottomOf="@id/lectureNameTextView"
             android:layout_marginHorizontal="5dp"
-            android:background="@drawable/ic_alert_on"/>
+            android:src="@drawable/ic_alert_on"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

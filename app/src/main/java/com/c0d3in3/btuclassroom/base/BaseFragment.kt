@@ -1,16 +1,16 @@
 package com.c0d3in3.btuclassroom.base
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.c0d3in3.btuclassroom.ui.MainActivity
 import com.c0d3in3.btuclassroom.utils.toast
 
 abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
@@ -20,15 +20,13 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
 
     abstract fun getLayout(): Int
 
+    abstract fun getTitle(): String
+    abstract fun isBackArrowEnabled() : Boolean
+    abstract fun toolbarButtonIcon() : Drawable?
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = providerViewModel()
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        if (viewModel != null)
-            onBindViewModel(viewModel!!)
     }
 
     override fun onCreateView(
@@ -36,7 +34,18 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as MainActivity).setToolbar(getTitle(), isBackArrowEnabled(), toolbarButtonIcon()) {
+            onToolbarButtonClick()
+        }
         return inflater.inflate(getLayout(), container, false)
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        showToolbar()
+        if (viewModel != null)
+            onBindViewModel(viewModel!!)
     }
 
 
@@ -53,4 +62,14 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
     protected fun navigate(actionId: Int, bundle: Bundle? = null){
         findNavController().navigate(actionId, bundle)
     }
+
+    private fun showToolbar(){
+        (activity as MainActivity).showToolbar()
+    }
+
+    protected fun hideToolbar(){
+        (activity as MainActivity).hideToolbar()
+    }
+
+    open fun onToolbarButtonClick(){}
 }

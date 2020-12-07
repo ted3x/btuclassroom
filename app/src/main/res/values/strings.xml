@@ -26,4 +26,9 @@
     <string name="we_are_getting_your_image">მოგვაქვს შენი სურათი : )</string>
     <string name="we_couldnt_get_your_lectures_try_again">ვერ წამოვიღეთ შენი ცხრილი : ( სცადე ხელახლა</string>
     <string name="we_are_getting_your_lectures">მოგვაქვს შენი ცხრილი : )</string>
+    <string name="auto_log_in">მიმდინარეობს ავტომატური ავტორიზაცია : )</string>
+    <string name="dashboard">დეშბორდი</string>
+    <string name="auth">ავტორიზაცია</string>
+    <string name="mails">წერილები</string>
+    <string name="error_while_getting_mails">მოხდა შეცდომება წერილების წამოღების დროს : (</string>
 </resources>

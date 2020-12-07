@@ -1,5 +1,6 @@
 package com.c0d3in3.btuclassroom.ui.mail_detail
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import com.c0d3in3.btuclassroom.R
 import com.c0d3in3.btuclassroom.base.BaseFragment
@@ -10,12 +11,13 @@ class MailDetailFragment : BaseFragment<MailDetailViewModel>() {
 
     private lateinit var mail: Mail
 
-    companion object {
-        fun newInstance() = MailDetailFragment()
-    }
-
     override var viewModelToken: Class<MailDetailViewModel>? = MailDetailViewModel::class.java
+
+    //TODO SET TO TITLE OF MAIL
+    override fun getTitle() = getString(R.string.mails)
+    override fun isBackArrowEnabled() = true
     override fun getLayout() = R.layout.mail_detail_fragment
+    override fun toolbarButtonIcon(): Drawable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,5 +32,4 @@ class MailDetailFragment : BaseFragment<MailDetailViewModel>() {
         titleTextView.text = mail.title
         //mailTextView.text = mail.text
     }
-
 }

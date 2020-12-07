@@ -9,23 +9,22 @@ import com.c0d3in3.btuclassroom.Constants.PASSWORD
 import com.c0d3in3.btuclassroom.Constants.USERNAME
 import com.c0d3in3.btuclassroom.R
 import com.c0d3in3.btuclassroom.base.BaseViewModel
-import com.c0d3in3.btuclassroom.model.Lecture
 import com.c0d3in3.btuclassroom.data.local.user.User
 import com.c0d3in3.btuclassroom.data.remote.NetworkHandler
-import com.c0d3in3.btuclassroom.data.remote.NetworkHandler.SCHEDULE_URL
 import com.c0d3in3.btuclassroom.data.remote.NetworkMethod
 import com.c0d3in3.btuclassroom.model.Result
 import com.c0d3in3.btuclassroom.resource_provider.ResourceProvider.getResourceString
 import com.c0d3in3.btuclassroom.shared_preferences.SharedPreferencesHandler
-import com.c0d3in3.btuclassroom.utils.getDayInt
 import com.c0d3in3.btuclassroom.utils.isNetworkAvailable
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class LoginViewModel : BaseViewModel() {
 
     companion object {
         const val FIRST_TIME = "first_time"
+        const val AUTO_LOGIN_DELAY = 2500L
     }
 
     private val username: String
@@ -33,7 +32,7 @@ class LoginViewModel : BaseViewModel() {
     val captcha = MutableLiveData<ByteArray>()
     val auth = MutableLiveData<Boolean>()
     val loadingMessage = MutableLiveData<String>()
-    val firstTimeUser : Boolean
+    private val firstTimeUser : Boolean
 
     init {
         SharedPreferencesHandler.removeSP(COOKIES)
@@ -41,7 +40,7 @@ class LoginViewModel : BaseViewModel() {
         password = SharedPreferencesHandler.getStringSP(PASSWORD)
         firstTimeUser = SharedPreferencesHandler.getBooleanSP(FIRST_TIME)
         if (username.isNotBlank() && password.isNotBlank()) {
-            if(isNetworkAvailable()) logIn(username, password)
+            if(isNetworkAvailable()) autoLogIn(username, password)
             else auth.value = true
         }
     }
@@ -111,6 +110,14 @@ class LoginViewModel : BaseViewModel() {
                 }
                 else -> message.postValue("Error while getting captcha")
             }
+        }
+    }
+
+    private fun autoLogIn(username: String, password: String) {
+        loadingMessage.value = getResourceString(R.string.auto_log_in)
+        viewModelScope.launch {
+            delay(AUTO_LOGIN_DELAY)
+            logIn(username, password)
         }
     }
 
