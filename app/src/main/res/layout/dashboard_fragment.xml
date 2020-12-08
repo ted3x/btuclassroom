@@ -167,6 +167,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/bpg_square"
             android:gravity="center"
+            android:drawablePadding="5dp"
             tools:text="13:00"
             app:layout_constraintEnd_toEndOf="@id/lectureDayTextView"
             app:layout_constraintTop_toBottomOf="@id/lectureDayTextView"

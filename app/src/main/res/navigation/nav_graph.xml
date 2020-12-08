@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_scheduleFragment"
+            app:destination="@id/scheduleFragment" />
     </fragment>
     <fragment
         android:id="@+id/mailsFragment"
@@ -42,4 +45,9 @@
             android:name="mail"
             app:argType="com.c0d3in3.btuclassroom.model.Mail" />
     </fragment>
+    <fragment
+        android:id="@+id/scheduleFragment"
+        android:name="com.c0d3in3.btuclassroom.ui.schedule.ScheduleFragment"
+        android:label="schedule_fragment"
+        tools:layout="@layout/schedule_fragment" />
 </navigation>

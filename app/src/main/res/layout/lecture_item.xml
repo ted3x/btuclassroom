@@ -1,0 +1,67 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/dashboard_item_margin"
+    android:layout_marginTop="10dp"
+    android:paddingHorizontal="15dp"
+    android:paddingVertical="10dp"
+    android:background="@drawable/curved_bg">
+
+
+    <TextView
+        android:id="@+id/lectureNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bpg_square"
+        android:textColor="#000"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="ეკონომიკის პრინციპები" />
+
+    <TextView
+        android:id="@+id/lecturerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lectureNameTextView"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/bpg_square"
+        android:textColor="#6c6c6c"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lectureNameTextView"
+        tools:text="ლექტორი:\nმარიამ ლაშხი" />
+
+    <TextView
+        android:id="@+id/lectureRoomTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/dashboard_item_margin"
+        android:fontFamily="@font/bpg_square"
+        android:textColor="#e40b73"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lecturerTextView"
+        tools:text="A207" />
+
+
+    <TextView
+        android:id="@+id/lectureTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bpg_square"
+        android:gravity="center"
+        android:textColor="@color/btu_pink_color"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:drawablePadding="5dp"
+        app:drawableStartCompat="@drawable/ic_clock"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/lectureRoomTextView"
+        tools:text="13:00" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

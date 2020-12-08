@@ -1,17 +1,18 @@
 package com.c0d3in3.btuclassroom.data.remote
 
-import android.graphics.Bitmap
 import com.c0d3in3.btuclassroom.App
 import com.c0d3in3.btuclassroom.R
 import com.c0d3in3.btuclassroom.model.Lecture
-import org.jsoup.Connection
-import org.jsoup.Jsoup
-import java.io.ByteArrayOutputStream
 import com.c0d3in3.btuclassroom.model.Result
 import com.c0d3in3.btuclassroom.resource_provider.ResourceProvider
 import com.c0d3in3.btuclassroom.utils.getDayInt
 import com.c0d3in3.btuclassroom.utils.isNetworkAvailable
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
+import org.jsoup.Connection
+import org.jsoup.Jsoup
 import java.io.IOException
 
 object NetworkHandler {

@@ -56,7 +56,7 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
             if (App.cookies.isEmpty()) {
                 requireContext().toast(getString(R.string.after_being_offline_you_have_to_auth_again))
                 navigate(R.id.action_dashboardFragment_to_loginFragment)
-            } else navigate(R.id.action_dashboardFragment_to_mailsFragment)
+            } else navigate(R.id.action_dashboardFragment_to_scheduleFragment)
         }
     }
 }
