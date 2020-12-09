@@ -44,6 +44,7 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showToolbar()
+        showBottomNav()
         if (viewModel != null)
             onBindViewModel(viewModel!!)
     }
@@ -69,6 +70,14 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
 
     protected fun hideToolbar(){
         (activity as MainActivity).hideToolbar()
+    }
+
+    private fun showBottomNav(){
+        (activity as MainActivity).showBottomNav()
+    }
+
+    protected fun hideBottomNav(){
+        (activity as MainActivity).hideBottomNav()
     }
 
     open fun onToolbarButtonClick(){}

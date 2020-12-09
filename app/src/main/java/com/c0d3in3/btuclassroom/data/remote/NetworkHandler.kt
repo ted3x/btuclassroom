@@ -2,6 +2,7 @@ package com.c0d3in3.btuclassroom.data.remote
 
 import com.c0d3in3.btuclassroom.App
 import com.c0d3in3.btuclassroom.R
+import com.c0d3in3.btuclassroom.model.Course
 import com.c0d3in3.btuclassroom.model.Lecture
 import com.c0d3in3.btuclassroom.model.Result
 import com.c0d3in3.btuclassroom.resource_provider.ResourceProvider
@@ -17,15 +18,16 @@ import java.io.IOException
 
 object NetworkHandler {
 
-    const val CAPTCHA_URL = "https://classroom.btu.edu.ge/ge/login/captcha"
-    const val LOGIN_URL = "https://classroom.btu.edu.ge/ge/login/trylogin"
-    private const val RATING_URL = "https://classroom.btu.edu.ge/ge/student/rating"
-    private const val CREDITS_URL = "https://classroom.btu.edu.ge/ge/student/me/index"
-    private const val IMAGE_URL = "https://classroom.btu.edu.ge/ge/student/resume/personal"
-    const val LOGIN_LOCATION = "https://classroom.btu.edu.ge/ge/login"
-    const val MAIL_URL = "https://classroom.btu.edu.ge/ge/messages"
-    const val SCHEDULE_URL = "https://classroom.btu.edu.ge/ge/student/me/schedule"
-    const val DASHBOARD_URL = "https://classroom.btu.edu.ge/ge/student/me/courses"
+    private const val BASE_URL = "https://classroom.btu.edu.ge/ge/"
+    const val CAPTCHA_URL = "${BASE_URL}login/captcha"
+    const val LOGIN_URL = "${BASE_URL}login/trylogin"
+    private const val RATING_URL = "${BASE_URL}student/rating"
+    private const val CREDITS_URL = "${BASE_URL}student/me/index"
+    private const val IMAGE_URL = "${BASE_URL}student/resume/personal"
+    const val LOGIN_LOCATION = "${BASE_URL}login"
+    const val MAIL_URL = "${BASE_URL}messages"
+    private const val SCHEDULE_URL = "${BASE_URL}student/me/schedule"
+    const val COURSES_URL = "${BASE_URL}student/me/courses"
 
     //Data is always represented as Map<String, String>
     suspend fun getDocument(
@@ -34,7 +36,7 @@ object NetworkHandler {
         data: Map<String, String>? = null,
         includeCookies: Boolean = false
     ): Result<Connection.Response> {
-        if(!isNetworkAvailable()) return Result.Error(null, "ინტერნეტთან წვდომა არ გვაქვს : (")
+        if (!isNetworkAvailable()) return Result.Error(null, "ინტერნეტთან წვდომა არ გვაქვს : (")
         val doc = Jsoup.connect(url)
             .method(method.methodType)
             .userAgent("Mozilla")
@@ -50,7 +52,6 @@ object NetworkHandler {
             Result.Error(e)
         }
     }
-
 
     suspend fun getUserRating(): Long {
         var userRating: Long = 0
@@ -170,5 +171,38 @@ object NetworkHandler {
         }
         scope.await()
         return lecturesList
+    }
+
+    suspend fun getCourses(): List<Course> {
+        val coursesList = mutableListOf<Course>()
+        val scope = CoroutineScope(Dispatchers.IO).async {
+            when (val result =
+                getDocument(COURSES_URL, NetworkMethod.GET, null, true)) {
+                is Result.Success -> {
+                    val parsedDoc = result.data.parse()
+                    val coursesBody = parsedDoc.getElementsByTag("tbody").select("tr")
+                    coursesBody.removeLast()
+                    coursesBody.forEach {
+                        val courseValues = it.select("td").toList()
+                        //TODO COURSEID
+//                            val courseUrl = courseValues[2]
+//                            val courseId = courseUrl.split("/")
+                        val courseCredits = courseValues[5].text().toInt()
+                        val coursePoints = courseValues[3].text().toInt()
+                        val courseName = courseValues[2].text()
+                        val course = Course(
+                            courseId = 0,
+                            courseCredit = courseCredits,
+                            courseName = courseName,
+                            coursePoint = coursePoints
+                        )
+                        coursesList.add(course)
+                    }
+                }
+                is Result.Error -> ResourceProvider.getResourceString(R.string.we_couldnt_get_your_lectures_try_again)
+            }
+        }
+        scope.await()
+        return coursesList
     }
 }

@@ -21,7 +21,7 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
     override fun getTitle() = getString(R.string.dashboard)
     override fun isBackArrowEnabled() = false
     override fun getLayout() = R.layout.dashboard_fragment
-    override fun toolbarButtonIcon() : Drawable?  = ResourceProvider.getDrawable(R.drawable.ic_mails)
+    override fun toolbarButtonIcon() : Drawable?  = ResourceProvider.getDrawable(R.drawable.ic_user)
 
     override fun onBindViewModel(viewModel: DashboardViewModel) {
         super.onBindViewModel(viewModel)
@@ -30,15 +30,13 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
             yearTextView.text = it
         })
 
-        viewModel.user.observe(viewLifecycleOwner, Observer {user->
-            userNameTexView.text = user.fullName
-            courseTextView.text = user.userCreditsText
-            if(user.userImage != null) {
-                //TODO EXTENSION decodeAndSetImage
-                val bitmap = BitmapFactory.decodeByteArray(user.userImage, 0, user.userImage.size)
-                userImageView.setImageBitmap(bitmap)
-            }
-        })
+        userNameTexView.text = viewModel.user.fullName
+        courseTextView.text = viewModel.user.userCreditsText
+        if(viewModel.user.userImage != null) {
+            //TODO EXTENSION decodeAndSetImage
+            val bitmap = BitmapFactory.decodeByteArray(viewModel.user.userImage, 0, viewModel.user.userImage.size)
+            userImageView.setImageBitmap(bitmap)
+        }
 
         viewModel.nextLecture.observe(viewLifecycleOwner, Observer {
             lectureNameTextView.text = it.shortLectureName

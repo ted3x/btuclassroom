@@ -28,6 +28,8 @@ class LoginFragment : BaseFragment<LoginViewModel>() {
     override fun onBindViewModel(viewModel: LoginViewModel) {
         super.onBindViewModel(viewModel)
 
+        hideBottomNav()
+
         viewModel.auth.observe(viewLifecycleOwner, Observer {
             navigate(R.id.action_loginFragment_to_dashboardFragment)
         })

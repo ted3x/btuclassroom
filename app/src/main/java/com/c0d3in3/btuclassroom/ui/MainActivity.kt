@@ -68,4 +68,12 @@ class MainActivity : AppCompatActivity() {
     fun hideToolbar() {
         toolbarLayout.setGone()
     }
+
+    fun showBottomNav() {
+        nav_view.setVisible()
+    }
+
+    fun hideBottomNav() {
+        nav_view.setGone()
+    }
 }

@@ -4,10 +4,9 @@ import android.content.Context
 import androidx.room.*
 import com.c0d3in3.btuclassroom.data.local.user.User
 import com.c0d3in3.btuclassroom.data.local.user.UserDao
-import com.c0d3in3.btuclassroom.model.Lecture
 
 @Database(entities = [User::class], version = 1)
-@TypeConverters(LectureConverter::class)
+@TypeConverters(LectureConverter::class, CoursesConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     companion object{
         private const val DATABASE_NAME = "BTUClassroom-DB"

@@ -27,6 +27,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_scheduleFragment"
             app:destination="@id/navigation_schedule" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_coursesFragment"
+            app:destination="@id/navigation_courses" />
     </fragment>
     <fragment
         android:id="@+id/navigation_mails"
@@ -50,4 +53,9 @@
         android:name="com.c0d3in3.btuclassroom.ui.schedule.ScheduleFragment"
         android:label="schedule_fragment"
         tools:layout="@layout/schedule_fragment" />
+    <fragment
+        android:id="@+id/navigation_courses"
+        android:name="com.c0d3in3.btuclassroom.ui.courses.CoursesFragment"
+        android:label="courses_fragment"
+        tools:layout="@layout/courses_fragment" />
 </navigation>

@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 class LoginViewModel : BaseViewModel() {
 
     companion object {
-        const val FIRST_TIME = "first_time"
+        const val REGISTERED_USER = "registered_user"
         const val AUTO_LOGIN_DELAY = 2500L
     }
 
@@ -32,13 +32,13 @@ class LoginViewModel : BaseViewModel() {
     val captcha = MutableLiveData<ByteArray>()
     val auth = MutableLiveData<Boolean>()
     val loadingMessage = MutableLiveData<String>()
-    private val firstTimeUser : Boolean
+    private val registeredUser : Boolean
 
     init {
         SharedPreferencesHandler.removeSP(COOKIES)
         username = SharedPreferencesHandler.getStringSP(USERNAME)
         password = SharedPreferencesHandler.getStringSP(PASSWORD)
-        firstTimeUser = SharedPreferencesHandler.getBooleanSP(FIRST_TIME)
+        registeredUser = SharedPreferencesHandler.getBooleanSP(REGISTERED_USER)
         if (username.isNotBlank() && password.isNotBlank()) {
             if(isNetworkAvailable()) autoLogIn(username, password)
             else auth.value = true
@@ -91,8 +91,11 @@ class LoginViewModel : BaseViewModel() {
                     } else {
                         App.cookies = result.data.cookies()
 
-                        if(firstTimeUser) addUser(username, password)
-                        else auth.postValue(true)
+                        if(registeredUser){
+                            App.currentUser = App.userRepository.getUser()
+                            auth.postValue(true)
+                        }
+                        else addUser(username, password)
                     }
                 }
                 is Result.Error -> message.postValue(result.message)
@@ -122,8 +125,6 @@ class LoginViewModel : BaseViewModel() {
     }
 
     private fun addUser(username: String, password: String) {
-        SharedPreferencesHandler.writeStringSP(USERNAME, username)
-        SharedPreferencesHandler.writeStringSP(PASSWORD, password)
         viewModelScope.launch(Dispatchers.IO) {
             loadingMessage.postValue(getResourceString(R.string.we_are_getting_your_fullname))
             val fullname = NetworkHandler.getUserFullname()
@@ -140,15 +141,25 @@ class LoginViewModel : BaseViewModel() {
             loadingMessage.postValue(getResourceString(R.string.we_are_getting_your_lectures))
             val lectures = NetworkHandler.getLectures()
 
+            loadingMessage.postValue(getResourceString(R.string.we_are_getting_your_corses))
+            val courses = NetworkHandler.getCourses()
+
             App.appDatabase.clearAllTables()
             val user = User(
                 fullName = fullname,
                 userCredits = userCredits,
                 userRating = userRating,
                 userImage = userImage,
-                lectures = lectures
+                lectures = lectures,
+                courses = courses
             )
             App.appDatabase.userDao().insertAll(user)
+            App.currentUser = user
+
+            SharedPreferencesHandler.writeStringSP(USERNAME, username)
+            SharedPreferencesHandler.writeStringSP(PASSWORD, password)
+            SharedPreferencesHandler.writeBooleanSP(REGISTERED_USER, true)
+
             auth.postValue(true)
         }
     }
