@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,40 +10,59 @@
     <FrameLayout
         android:id="@+id/toolbarLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark"
-            android:background="@android:color/background_dark"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"/>
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/background_dark"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark" />
 
         <TextView
             android:id="@+id/toolbarTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/background_light"
-            tools:text="სათაური"
-            android:textStyle="bold"
-            android:textSize="18sp"
+            android:layout_gravity="center"
             android:fontFamily="@font/bpg_square"
-            android:layout_gravity="center"/>
+            android:textColor="@android:color/background_light"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="სათაური" />
 
         <ImageButton
             android:id="@+id/toolbarButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:background="@drawable/ic_mails"
-            android:layout_gravity="center_vertical|end"/>
+            android:layout_gravity="center_vertical|end"
+            tools:background="@drawable/ic_mails" />
     </FrameLayout>
 
     <fragment
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@id/nav_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarLayout"
         app:navGraph="@navigation/nav_graph" />
 
-</LinearLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        app:itemIconTint="@android:color/black"
+        app:labelVisibilityMode="unlabeled"
+        android:background="?android:attr/windowBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

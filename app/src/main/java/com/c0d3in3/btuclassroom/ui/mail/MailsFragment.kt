@@ -16,7 +16,7 @@ class MailsFragment : BaseFragment<MailsViewModel>() {
     override var viewModelToken: Class<MailsViewModel>? = MailsViewModel::class.java
 
     override fun getTitle() = getString(R.string.mails)
-    override fun isBackArrowEnabled() = true
+    override fun isBackArrowEnabled() = false
     override fun getLayout() = R.layout.mails_fragment
     override fun toolbarButtonIcon(): Drawable? = null
 

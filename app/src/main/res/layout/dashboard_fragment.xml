@@ -146,6 +146,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/lecturerTextView"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
@@ -166,11 +167,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/bpg_square"
-            android:gravity="center"
             android:drawablePadding="5dp"
             tools:text="13:00"
             app:layout_constraintEnd_toEndOf="@id/lectureDayTextView"
-            app:layout_constraintTop_toBottomOf="@id/lectureDayTextView"
+            app:layout_constraintBottom_toBottomOf="@id/lectureRoomTextView"
             android:textColor="@color/btu_pink_color"
             android:textSize="16sp"
             android:textStyle="bold"

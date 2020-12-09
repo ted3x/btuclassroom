@@ -15,7 +15,7 @@ class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
 
     override fun getLayout() = R.layout.schedule_fragment
     override fun getTitle() = "ცხრილი"
-    override fun isBackArrowEnabled() = true
+    override fun isBackArrowEnabled() = false
     override fun toolbarButtonIcon(): Drawable? = null
 
     override fun onBindViewModel(viewModel: ScheduleViewModel) {
