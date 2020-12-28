@@ -1,12 +1,14 @@
 package com.c0d3in3.btuclassroom.resource_provider
 
 import android.annotation.SuppressLint
-import com.c0d3in3.btuclassroom.App
+import android.content.Context
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object ResourceProvider {
+class ResourceProvider @Inject constructor(private val context: Context) {
 
-    fun getResourceString(stringId: Int) = App.instance.applicationContext.getString(stringId)
+    fun getResourceString(stringId: Int) = context.getString(stringId)
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    fun getDrawable(drawableId: Int) = App.instance.applicationContext.getDrawable(drawableId)
+    fun getDrawable(drawableId: Int) = context.getDrawable(drawableId)
 }

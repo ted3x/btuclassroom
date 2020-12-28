@@ -2,28 +2,30 @@ package com.c0d3in3.btuclassroom.ui.login
 
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import com.c0d3in3.btuclassroom.App
 import com.c0d3in3.btuclassroom.R
+import com.c0d3in3.btuclassroom.app.App
 import com.c0d3in3.btuclassroom.base.BaseFragment
-import com.c0d3in3.btuclassroom.utils.isNetworkAvailable
+import com.c0d3in3.btuclassroom.app.AppComponent
 import com.c0d3in3.btuclassroom.utils.isVisible
-import com.c0d3in3.btuclassroom.utils.toast
 import kotlinx.android.synthetic.main.loading.*
 import kotlinx.android.synthetic.main.login_fragment.*
+import javax.inject.Inject
 
 class LoginFragment : BaseFragment<LoginViewModel>() {
 
-    override var viewModelToken: Class<LoginViewModel>? = LoginViewModel::class.java
+    @Inject
+    override lateinit var viewModel: LoginViewModel
 
     override fun getTitle() = getString(R.string.auth)
     override fun isBackArrowEnabled() = false
     override fun getLayout() = R.layout.login_fragment
     override fun toolbarButtonIcon(): Drawable? = null
+
+    override fun injectDagger() {
+        App.appComponent.inject(this)
+    }
 
     override fun onBindViewModel(viewModel: LoginViewModel) {
         super.onBindViewModel(viewModel)
@@ -53,7 +55,7 @@ class LoginFragment : BaseFragment<LoginViewModel>() {
             val username = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
             val captcha = if(captchaEditText.isVisible()) captchaEditText.text.toString() else null
-            viewModel!!.logIn(username, password, captcha)
+            viewModel.logIn(username, password, captcha)
         }
     }
 }

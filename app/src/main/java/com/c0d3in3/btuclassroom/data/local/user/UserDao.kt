@@ -5,6 +5,8 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.c0d3in3.btuclassroom.data.local.user.User
+import dagger.Provides
+import javax.inject.Singleton
 
 @Dao
 interface UserDao {
@@ -22,4 +24,7 @@ interface UserDao {
 
     @Delete
     fun delete(user: User)
+
+    @Query("DELETE FROM user")
+    fun dropTable()
 }

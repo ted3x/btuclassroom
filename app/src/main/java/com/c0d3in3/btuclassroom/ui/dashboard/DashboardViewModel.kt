@@ -1,24 +1,36 @@
 package com.c0d3in3.btuclassroom.ui.dashboard
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.c0d3in3.btuclassroom.App
 import com.c0d3in3.btuclassroom.base.BaseViewModel
-import com.c0d3in3.btuclassroom.model.Lecture
 import com.c0d3in3.btuclassroom.data.local.user.User
+import com.c0d3in3.btuclassroom.model.Lecture
+import com.c0d3in3.btuclassroom.data.local.user.UserRepository
+import kotlinx.android.synthetic.main.dashboard_fragment.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
-class DashboardViewModel : BaseViewModel() {
+class DashboardViewModel @Inject constructor(userRepository: UserRepository) : BaseViewModel() {
 
-    val user = App.currentUser
+    lateinit var user: User
     val nextLecture = MutableLiveData<Lecture>()
     val yearText = MutableLiveData<String>()
+    val userImage = MutableLiveData<Bitmap>()
 
     init {
-        nextLecture.value = getNextLecture()
+        viewModelScope.launch(Dispatchers.Default) {
+            user = userRepository.getUser()
+            if(user.userImage != null) {
+                //TODO EXTENSION decodeAndSetImage
+                val bitmap = BitmapFactory.decodeByteArray(user.userImage, 0, user.userImage!!.size)
+                userImage.postValue(bitmap)
+            }
+            nextLecture.postValue(getNextLecture())
+        }
         val calendar = Calendar.getInstance()
         val curYear = calendar.get(Calendar.YEAR)
         yearText.value = "$curYear - ${curYear + 1}"

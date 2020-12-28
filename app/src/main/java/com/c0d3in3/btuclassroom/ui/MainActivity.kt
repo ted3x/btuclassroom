@@ -11,6 +11,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.c0d3in3.btuclassroom.R
+import com.c0d3in3.btuclassroom.app.AppComponent
 import com.c0d3in3.btuclassroom.utils.setGone
 import com.c0d3in3.btuclassroom.utils.setVisible
 import com.google.android.material.bottomnavigation.BottomNavigationView

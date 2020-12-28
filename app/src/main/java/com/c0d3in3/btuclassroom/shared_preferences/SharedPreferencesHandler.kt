@@ -1,13 +1,18 @@
 package com.c0d3in3.btuclassroom.shared_preferences
 
+import android.content.Context
 import android.content.Context.MODE_PRIVATE
-import com.c0d3in3.btuclassroom.App
+import com.c0d3in3.btuclassroom.utils.Constants
+import com.c0d3in3.btuclassroom.ui.login.LoginViewModel
+import javax.inject.Inject
 
-object SharedPreferencesHandler {
+class SharedPreferencesHandler @Inject constructor(context: Context) {
 
-    private const val SHARED_PREFERENCES_FILE_KEY = "BTU-CLASSROOM-PREFERENCES"
+    companion object{
+        private const val SHARED_PREFERENCES_FILE_KEY = "BTU-CLASSROOM-PREFERENCES"
+    }
 
-    private val sharedPreferences = App.instance.applicationContext.getSharedPreferences(SHARED_PREFERENCES_FILE_KEY, MODE_PRIVATE)
+    private val sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_FILE_KEY, MODE_PRIVATE)
 
     private val editor = sharedPreferences.edit()
 
@@ -37,5 +42,11 @@ object SharedPreferencesHandler {
 
     fun removeSP(key: String){
         editor.remove(key).apply()
+    }
+
+    fun writeUserData(username: String, password: String){
+        writeStringSP(Constants.USERNAME, username)
+        writeStringSP(Constants.PASSWORD, password)
+        writeBooleanSP(LoginViewModel.REGISTERED_USER, true)
     }
 }

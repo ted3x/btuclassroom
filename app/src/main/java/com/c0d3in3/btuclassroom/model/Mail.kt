@@ -1,9 +1,6 @@
 package com.c0d3in3.btuclassroom.model
 
 import android.os.Parcelable
-import com.c0d3in3.btuclassroom.data.remote.NetworkHandler
-import com.c0d3in3.btuclassroom.data.remote.NetworkMethod
-import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
