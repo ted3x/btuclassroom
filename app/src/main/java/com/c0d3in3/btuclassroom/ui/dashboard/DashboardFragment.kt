@@ -2,6 +2,7 @@ package com.c0d3in3.btuclassroom.ui.dashboard
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
+import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import com.c0d3in3.btuclassroom.app.App
 import com.c0d3in3.btuclassroom.R
@@ -37,8 +38,10 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
             yearTextView.text = it
         }
 
-        userNameTexView.text = viewModel.user.fullName
-        courseTextView.text = getUserCreditsAsText(requireContext(), viewModel.user.userCredits)
+        viewModel.user.observe(viewLifecycleOwner, Observer {
+            userNameTexView.text = it.fullName
+            courseTextView.text = getUserCreditsAsText(requireContext(), it.userCredits)
+        })
 
         viewModel.userImage.observe(viewLifecycleOwner) {
             userImageView.setImageBitmap(it)

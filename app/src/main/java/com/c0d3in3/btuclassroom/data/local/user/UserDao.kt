@@ -11,7 +11,7 @@ import javax.inject.Singleton
 @Dao
 interface UserDao {
     @Query("SELECT * FROM user LIMIT 1")
-    fun getUser(): User
+    suspend fun getUser(): User
 
     @Query("SELECT * FROM user WHERE uid IN (:userIds)")
     fun loadAllByIds(userIds: IntArray): List<User>
