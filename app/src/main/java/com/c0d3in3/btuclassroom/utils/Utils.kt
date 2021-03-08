@@ -65,14 +65,14 @@ fun Context.toast(message: String){
 
 fun View.isVisible() = this.visibility == View.VISIBLE
 
-fun View.setVisible(){
+fun View.show(){
     this.visibility = View.VISIBLE
 }
 
-fun View.setInvisible(){
+fun View.hide(){
     this.visibility = View.INVISIBLE
 }
 
-fun View.setGone(){
+fun View.goAway(){
     this.visibility = View.GONE
 }

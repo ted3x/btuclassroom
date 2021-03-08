@@ -3,18 +3,15 @@ package com.c0d3in3.btuclassroom.ui.dashboard
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import com.c0d3in3.btuclassroom.App
 import com.c0d3in3.btuclassroom.R
-import com.c0d3in3.btuclassroom.base.BaseFragment
+import ge.ted3x.core.base.BaseFragment
 import com.c0d3in3.btuclassroom.resource_provider.ResourceProvider
 import com.c0d3in3.btuclassroom.utils.getDayString
 import com.c0d3in3.btuclassroom.utils.isNetworkAvailable
-import com.c0d3in3.btuclassroom.utils.toast
 import kotlinx.android.synthetic.main.dashboard_fragment.*
-import kotlin.coroutines.coroutineContext
 
-class DashboardFragment : BaseFragment<DashboardViewModel>() {
+class DashboardFragment : ge.ted3x.core.base.BaseFragment<DashboardViewModel>() {
 
     override var viewModelToken: Class<DashboardViewModel>? = DashboardViewModel::class.java
 

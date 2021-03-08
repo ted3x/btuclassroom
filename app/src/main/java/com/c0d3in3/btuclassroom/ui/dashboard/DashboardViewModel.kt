@@ -1,17 +1,12 @@
 package com.c0d3in3.btuclassroom.ui.dashboard
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.c0d3in3.btuclassroom.App
-import com.c0d3in3.btuclassroom.base.BaseViewModel
+import ge.ted3x.core.base.BaseViewModel
 import com.c0d3in3.btuclassroom.model.Lecture
-import com.c0d3in3.btuclassroom.data.local.user.User
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import java.util.*
 
-class DashboardViewModel : BaseViewModel() {
+class DashboardViewModel : ge.ted3x.core.base.BaseViewModel() {
 
     val user = App.currentUser
     val nextLecture = MutableLiveData<Lecture>()

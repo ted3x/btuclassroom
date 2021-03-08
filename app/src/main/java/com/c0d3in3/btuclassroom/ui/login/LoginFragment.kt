@@ -2,21 +2,14 @@ package com.c0d3in3.btuclassroom.ui.login
 
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import com.c0d3in3.btuclassroom.App
 import com.c0d3in3.btuclassroom.R
-import com.c0d3in3.btuclassroom.base.BaseFragment
-import com.c0d3in3.btuclassroom.utils.isNetworkAvailable
-import com.c0d3in3.btuclassroom.utils.isVisible
-import com.c0d3in3.btuclassroom.utils.toast
+import ge.ted3x.core.base.BaseFragment
 import kotlinx.android.synthetic.main.loading.*
 import kotlinx.android.synthetic.main.login_fragment.*
 
-class LoginFragment : BaseFragment<LoginViewModel>() {
+class LoginFragment : ge.ted3x.core.base.BaseFragment<LoginViewModel>() {
 
     override var viewModelToken: Class<LoginViewModel>? = LoginViewModel::class.java
 

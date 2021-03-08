@@ -5,11 +5,11 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.c0d3in3.btuclassroom.Constants.MAIL_MODEL_KEY
 import com.c0d3in3.btuclassroom.R
-import com.c0d3in3.btuclassroom.base.BaseFragment
+import ge.ted3x.core.base.BaseFragment
 import com.c0d3in3.btuclassroom.model.Mail
 import kotlinx.android.synthetic.main.mail_detail_fragment.*
 
-class MailDetailFragment : BaseFragment<MailDetailViewModel>() {
+class MailDetailFragment : ge.ted3x.core.base.BaseFragment<MailDetailViewModel>() {
 
     private lateinit var mail: Mail
 

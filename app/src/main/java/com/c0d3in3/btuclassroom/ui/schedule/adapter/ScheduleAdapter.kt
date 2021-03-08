@@ -1,11 +1,11 @@
 package com.c0d3in3.btuclassroom.ui.schedule.adapter
 
 import android.content.Context
-import com.c0d3in3.btuclassroom.base.BaseAdapter
+import ge.ted3x.core.base.BaseAdapter
 import com.c0d3in3.btuclassroom.model.Lecture
 import com.c0d3in3.btuclassroom.ui.schedule.view.LectureView
 
-class ScheduleAdapter : BaseAdapter<Lecture>() {
+class ScheduleAdapter : ge.ted3x.core.base.BaseAdapter<Lecture>() {
 
     private var currentDay = 0
     override fun getViewHolder(context: Context) = BaseViewHolder(LectureView(context))

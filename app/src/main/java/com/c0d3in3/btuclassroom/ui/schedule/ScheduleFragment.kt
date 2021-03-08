@@ -3,11 +3,11 @@ package com.c0d3in3.btuclassroom.ui.schedule
 import android.graphics.drawable.Drawable
 import androidx.lifecycle.Observer
 import com.c0d3in3.btuclassroom.R
-import com.c0d3in3.btuclassroom.base.BaseFragment
+import ge.ted3x.core.base.BaseFragment
 import com.c0d3in3.btuclassroom.ui.schedule.adapter.ScheduleAdapter
 import kotlinx.android.synthetic.main.schedule_fragment.*
 
-class ScheduleFragment : BaseFragment<ScheduleViewModel>() {
+class ScheduleFragment : ge.ted3x.core.base.BaseFragment<ScheduleViewModel>() {
 
     private lateinit var adapter: ScheduleAdapter
 

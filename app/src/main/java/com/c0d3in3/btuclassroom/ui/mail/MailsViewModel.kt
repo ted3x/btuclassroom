@@ -1,19 +1,17 @@
 package com.c0d3in3.btuclassroom.ui.mail
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.c0d3in3.btuclassroom.R
-import com.c0d3in3.btuclassroom.base.BaseViewModel
+import ge.ted3x.core.base.BaseViewModel
 import com.c0d3in3.btuclassroom.data.remote.NetworkHandler
 import com.c0d3in3.btuclassroom.data.remote.NetworkHandler.MAIL_URL
 import com.c0d3in3.btuclassroom.data.remote.NetworkMethod
 import com.c0d3in3.btuclassroom.model.Mail
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import com.c0d3in3.btuclassroom.model.Result
 import com.c0d3in3.btuclassroom.resource_provider.ResourceProvider.getResourceString
 
-class MailsViewModel : BaseViewModel() {
+class MailsViewModel : ge.ted3x.core.base.BaseViewModel() {
 
     val mails = MutableLiveData<List<Mail>>()
 

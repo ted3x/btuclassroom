@@ -1,4 +1,4 @@
-package com.c0d3in3.btuclassroom.base
+package ge.ted3x.core.base
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

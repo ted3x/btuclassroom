@@ -3,11 +3,11 @@ package com.c0d3in3.btuclassroom.ui.courses
 import android.graphics.drawable.Drawable
 import androidx.lifecycle.Observer
 import com.c0d3in3.btuclassroom.R
-import com.c0d3in3.btuclassroom.base.BaseFragment
+import ge.ted3x.core.base.BaseFragment
 import com.c0d3in3.btuclassroom.ui.courses.adapter.CoursesAdapter
 import kotlinx.android.synthetic.main.courses_fragment.*
 
-class CoursesFragment : BaseFragment<CoursesViewModel>() {
+class CoursesFragment : ge.ted3x.core.base.BaseFragment<CoursesViewModel>() {
 
     override var viewModelToken: Class<CoursesViewModel>? = CoursesViewModel::class.java
 
