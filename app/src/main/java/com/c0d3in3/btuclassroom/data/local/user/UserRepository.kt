@@ -5,7 +5,7 @@ import javax.inject.Singleton
 
 class UserRepository @Inject constructor(private val userDao : UserDao) {
 
-    suspend fun getUser() = userDao.getUser()
+    fun getUser() = userDao.getUser()
 
     fun addUser(user: User) = userDao.insertAll(user)
 
