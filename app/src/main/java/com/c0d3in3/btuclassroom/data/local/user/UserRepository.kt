@@ -1,14 +1,10 @@
 package com.c0d3in3.btuclassroom.data.local.user
 
-import javax.inject.Inject
-import javax.inject.Singleton
+import com.c0d3in3.btuclassroom.App
 
-class UserRepository @Inject constructor(private val userDao : UserDao) {
+class UserRepository {
+
+    private val userDao = App.appDatabase.userDao()
 
     fun getUser() = userDao.getUser()
-
-    fun addUser(user: User) = userDao.insertAll(user)
-
-    fun dropTable() = userDao.dropTable()
-
 }

@@ -1,4 +1,4 @@
-package com.c0d3in3.btuclassroom.data.local.convertors
+package com.c0d3in3.btuclassroom.data.local
 
 import androidx.room.TypeConverter
 import com.c0d3in3.btuclassroom.model.Lecture

@@ -4,10 +4,12 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.os.Handler
 import android.view.View
 import android.widget.Toast
-import com.c0d3in3.btuclassroom.app.App
-import com.c0d3in3.btuclassroom.R
+import androidx.appcompat.app.AppCompatActivity
+import com.c0d3in3.btuclassroom.App
+import java.util.*
 
 
 fun getDayInt(day: String): Int {
@@ -73,13 +75,4 @@ fun View.setInvisible(){
 
 fun View.setGone(){
     this.visibility = View.GONE
-}
-
-fun getUserCreditsAsText(context: Context, credits: Long) : String{
-    return when (credits) {
-        in 60..119 -> context.getString(R.string.second_course)
-        in 120..179 -> context.getString(R.string.third_course)
-        in 180..240 -> context.getString(R.string.fourth_course)
-        else -> context.getString(R.string.first_course)
-    }
 }

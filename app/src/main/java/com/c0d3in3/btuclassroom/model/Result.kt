@@ -1,4 +1,4 @@
-package com.c0d3in3.btuclassroom.data.remote.model
+package com.c0d3in3.btuclassroom.model
 
 sealed class Result<out R> {
     data class Success<out T>(val data: T) : Result<T>()

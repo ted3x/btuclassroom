@@ -1,33 +1,33 @@
 package com.c0d3in3.btuclassroom.data.remote
 
-import com.c0d3in3.btuclassroom.app.App
+import com.c0d3in3.btuclassroom.App
 import com.c0d3in3.btuclassroom.R
 import com.c0d3in3.btuclassroom.model.Course
 import com.c0d3in3.btuclassroom.model.Lecture
-import com.c0d3in3.btuclassroom.data.remote.model.Result
+import com.c0d3in3.btuclassroom.model.Result
 import com.c0d3in3.btuclassroom.resource_provider.ResourceProvider
 import com.c0d3in3.btuclassroom.utils.getDayInt
 import com.c0d3in3.btuclassroom.utils.isNetworkAvailable
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import java.io.IOException
-import javax.inject.Inject
 
-class NetworkHandler @Inject constructor(private val resourceProvider: ResourceProvider){
+object NetworkHandler {
 
-    companion object{
-        private const val BASE_URL = "https://classroom.btu.edu.ge/ge/"
-        const val CAPTCHA_URL = "${BASE_URL}login/captcha"
-        const val LOGIN_URL = "${BASE_URL}login/trylogin"
-        private const val RATING_URL = "${BASE_URL}student/rating"
-        private const val CREDITS_URL = "${BASE_URL}student/me/index"
-        private const val IMAGE_URL = "${BASE_URL}student/resume/personal"
-        const val LOGIN_LOCATION = "${BASE_URL}login"
-        const val MAIL_URL = "${BASE_URL}messages"
-        private const val SCHEDULE_URL = "${BASE_URL}student/me/schedule"
-        private const val COURSES_URL = "${BASE_URL}student/me/courses"
-    }
+    private const val BASE_URL = "https://classroom.btu.edu.ge/ge/"
+    const val CAPTCHA_URL = "${BASE_URL}login/captcha"
+    const val LOGIN_URL = "${BASE_URL}login/trylogin"
+    private const val RATING_URL = "${BASE_URL}student/rating"
+    private const val CREDITS_URL = "${BASE_URL}student/me/index"
+    private const val IMAGE_URL = "${BASE_URL}student/resume/personal"
+    const val LOGIN_LOCATION = "${BASE_URL}login"
+    const val MAIL_URL = "${BASE_URL}messages"
+    private const val SCHEDULE_URL = "${BASE_URL}student/me/schedule"
+    const val COURSES_URL = "${BASE_URL}student/me/courses"
 
     //Data is always represented as Map<String, String>
     suspend fun getDocument(
@@ -43,6 +43,7 @@ class NetworkHandler @Inject constructor(private val resourceProvider: ResourceP
         if (data != null) doc.data(data)
         if (includeCookies) doc.cookies(App.cookies)
         return try {
+
             withContext(Dispatchers.IO) {
                 val response = doc.execute()
                 Result.Success(response)
@@ -74,7 +75,7 @@ class NetworkHandler @Inject constructor(private val resourceProvider: ResourceP
 
     suspend fun getUserCredits(): Long {
         var userCredits: Long = 0
-        return withContext(Dispatchers.IO) {
+        val scope = CoroutineScope(Dispatchers.IO).async {
             when (val result = getDocument(CREDITS_URL, NetworkMethod.GET, null, true)) {
                 is Result.Success -> {
                     val parsedData = result.data.parse()
@@ -84,14 +85,16 @@ class NetworkHandler @Inject constructor(private val resourceProvider: ResourceP
                         userCredits = creditsText.replace("[^0-9]".toRegex(), "").toLong()
                     }
                 }
+                else -> userCredits = 0
             }
-            userCredits
         }
+        scope.await()
+        return userCredits
     }
 
     suspend fun getUserImage(): ByteArray? {
         var imageBytes: ByteArray? = null
-        return withContext(Dispatchers.IO) {
+        val scope = CoroutineScope(Dispatchers.IO).async {
             when (val result = getDocument(IMAGE_URL, NetworkMethod.GET, null, true)) {
                 is Result.Success -> {
                     val userImageSrc =
@@ -106,13 +109,15 @@ class NetworkHandler @Inject constructor(private val resourceProvider: ResourceP
                     imageBytes = userImageDoc.bodyAsBytes()
                 }
             }
-            imageBytes
         }
+        scope.await()
+        return imageBytes
     }
 
-    suspend fun getUserFullName(): String {
-        return withContext(Dispatchers.IO) {
-            val userFullName =
+    suspend fun getUserFullname(): String {
+        var userFullname = ""
+        val scope = CoroutineScope(Dispatchers.IO).async {
+            userFullname =
                 when (val result = getDocument(IMAGE_URL, NetworkMethod.GET, null, true)) {
                     is Result.Success -> {
                         val parsedData = result.data.parse()
@@ -122,13 +127,14 @@ class NetworkHandler @Inject constructor(private val resourceProvider: ResourceP
                     }
                     else -> ""
                 }
-            userFullName
         }
+        scope.await()
+        return userFullname
     }
 
     suspend fun getLectures(): List<Lecture> {
         val lecturesList = mutableListOf<Lecture>()
-        return withContext(Dispatchers.IO) {
+        val scope = CoroutineScope(Dispatchers.IO).async {
             when (val result =
                 getDocument(SCHEDULE_URL, NetworkMethod.GET, null, true)) {
                 is Result.Success -> {
@@ -160,21 +166,22 @@ class NetworkHandler @Inject constructor(private val resourceProvider: ResourceP
                         if (tag.className() == "info" && tag.text() != day) continue
                     }
                 }
-                is Result.Error -> resourceProvider.getResourceString(R.string.we_couldnt_get_your_lectures_try_again)
+                is Result.Error -> ResourceProvider.getResourceString(R.string.we_couldnt_get_your_lectures_try_again)
             }
-            lecturesList
         }
+        scope.await()
+        return lecturesList
     }
 
     suspend fun getCourses(): List<Course> {
         val coursesList = mutableListOf<Course>()
-        return withContext(Dispatchers.IO) {
+        val scope = CoroutineScope(Dispatchers.IO).async {
             when (val result =
                 getDocument(COURSES_URL, NetworkMethod.GET, null, true)) {
                 is Result.Success -> {
                     val parsedDoc = result.data.parse()
                     val coursesBody = parsedDoc.getElementsByTag("tbody").select("tr")
-                    coursesBody.removeAt(coursesBody.size-1)
+                    coursesBody.removeLast()
                     coursesBody.forEach {
                         val courseValues = it.select("td").toList()
                         //TODO COURSEID
@@ -192,9 +199,10 @@ class NetworkHandler @Inject constructor(private val resourceProvider: ResourceP
                         coursesList.add(course)
                     }
                 }
-                is Result.Error -> resourceProvider.getResourceString(R.string.we_couldnt_get_your_lectures_try_again)
+                is Result.Error -> ResourceProvider.getResourceString(R.string.we_couldnt_get_your_lectures_try_again)
             }
-            coursesList
         }
+        scope.await()
+        return coursesList
     }
 }

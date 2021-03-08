@@ -17,6 +17,7 @@
     <string name="title">სათაური</string>
     <string name="date">თარიღი</string>
     <string name="no_mails">წერილები ვერ მოიძებნა!</string>
+    <string name="second_course">II კურსი</string>
     <string name="after_being_offline_you_have_to_auth_again">offline კავშირის შემდეგ საიტთან დასაკავშირებლად საჭიროა ავტომატური ავტორიზაციის გავლა!</string>
     <string name="you_should_have_network_connection_to_access_mails">წერილების სექციაზე გადასასვლელად საჭიროა ინტერნეტთან წვდომა. გთხოვთ შეამოწმოთ თქვენი კავშირი ინტერნეტთან!</string>
     <string name="we_are_getting_your_fullname">მოგვაქვს შენი სრული სახელი :)</string>
@@ -38,8 +39,4 @@
     <string name="schedule">ცხრილი</string>
     <string name="courses">კურსები</string>
     <string name="we_are_getting_your_corses">მოგვაქვს შენი კურსები : )</string>
-    <string name="first_course">I კურსი</string>
-    <string name="second_course">II კურსი</string>
-    <string name="third_course">III კურსი</string>
-    <string name="fourth_course">IV კურსი</string>
 </resources>
