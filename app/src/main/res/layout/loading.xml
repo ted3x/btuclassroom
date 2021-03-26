@@ -1,33 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e40b73">
+    android:background="#e40b73"
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/loadingTextView"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:fontFamily="@font/bpg_square"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="მიმდინარეობს ავტომატური ავტორიზაცია!" />
 
-        <TextView
-            android:id="@+id/loadingTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bpg_square"
-            android:textColor="#fff"
-            android:text="მიმდინარეობს ავტომატური ავტორიზაცია!"
-            android:layout_centerInParent="true"
-            android:textSize="22dp"
-            android:textAlignment="center"
-            android:layout_marginBottom="30dp">
-
-        </TextView>
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/loadingTextView"
-            android:layout_centerHorizontal="true">
-
-        </ProgressBar>
-    </RelativeLayout>
-</LinearLayout>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loadingTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/loadingTextView" />
+</androidx.constraintlayout.widget.ConstraintLayout>

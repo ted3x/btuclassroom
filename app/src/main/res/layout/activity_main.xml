@@ -1,304 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/drawerLayout"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true">
+    android:orientation="vertical"
+    tools:context=".ui.AppActivity">
 
-    <RelativeLayout
-        xmlns:tools="http://schemas.android.com/tools"
+    <FrameLayout
+        android:id="@+id/toolbarLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity"
-        android:background="#f2f2f2">
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
+            android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:layout_width="match_parent"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            android:background="?attr/colorPrimary">
-
-    </androidx.appcompat.widget.Toolbar>
-
-        <RelativeLayout
-            android:id="@+id/mainHeaderLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="15dp">
-
-            <TextView
-                android:id="@+id/BTUTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="BTU Classroom"
-                android:textColor="#e40b73"
-                android:layout_centerInParent="true"
-                android:fontFamily="@font/bpg_square"
-                android:textSize="22sp"
-                android:textStyle="bold">
-
-            </TextView>
-            <Button
-                android:id="@+id/mailButton"
-                android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:drawableStart="@drawable/ic_mails"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="15dp"
-                android:textColor="#b94a48"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_centerInParent="true">
-
-
-            </Button>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/userInfoLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/mainHeaderLayout"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/curved_bg">
-
-            <ImageView
-                android:id="@+id/userLogoImageView"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:foreground="@drawable/rounded_fg">
-
-            </ImageView>
-
-            <TextView
-                android:id="@+id/userNameTexView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="თედო მანველიძე"
-                android:textStyle="bold"
-                android:textColor="#000"
-                android:fontFamily="@font/bpg_square"
-                android:textSize="16sp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="15dp"
-                android:layout_toRightOf="@id/userLogoImageView">
-            </TextView>
-
-            <TextView
-                android:id="@+id/semestriTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="III სემესტრი"
-                android:textStyle="bold"
-                android:textColor="#707070"
-                android:fontFamily="@font/bpg_square"
-                android:textSize="14sp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="15dp"
-                android:layout_toRightOf="@id/userLogoImageView"
-                android:layout_below="@id/userNameTexView">
-            </TextView>
-
-            <TextView
-                android:id="@+id/yearTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2019-2020"
-                android:textStyle="bold"
-                android:textColor="#707070"
-                android:fontFamily="@font/bpg_square"
-                android:textSize="14sp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="15dp"
-                android:layout_toRightOf="@id/userLogoImageView"
-                android:layout_below="@id/semestriTextView">
-            </TextView>
-
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="25dp"
-                android:background="@drawable/money_bg"
-                android:text="2250‎₾ "
-                android:fontFamily="@font/bpg_square"
-                android:layout_marginRight="15dp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:textColor="#ffffff"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/semestriTextView"
-                android:layout_alignParentRight="true">
-
-            </TextView>
-
-        </RelativeLayout>
+            android:background="@android:color/background_dark"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark" />
 
         <TextView
-            android:id="@+id/nextScheduleTextView"
+            android:id="@+id/toolbarTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#e40b73"
-            android:text="შემდეგი ლექცია"
+            android:layout_gravity="center"
             android:fontFamily="@font/bpg_square"
-            android:textSize="16sp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_below="@id/userInfoLayout">
-
-        </TextView>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/nextScheduleTextView"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/curved_bg">
-
-
-            <TextView
-                android:id="@+id/lectureNameTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#000"
-                android:text="ეკონომიკის პრინციპები"
-                android:fontFamily="@font/bpg_square"
-                android:textSize="18sp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/lecturerTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#6c6c6c"
-                android:text="ლექტორი:\nმარიამ ლაშხი"
-                android:fontFamily="@font/bpg_square"
-                android:textSize="14sp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_below="@id/lectureNameTextView">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/lectureTimeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#e40b73"
-                android:text="13:00"
-                android:gravity="center"
-                android:drawableStart="@drawable/ic_clock"
-                android:fontFamily="@font/bpg_square"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:layout_marginRight="10dp"
-                android:layout_below="@id/lecturerTextView"
-                android:layout_alignParentRight="true">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/lectureRoomTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#e40b73"
-                android:text="A207"
-                android:textStyle="bold"
-                android:fontFamily="@font/bpg_square"
-                android:textSize="16sp"
-                android:layout_below="@id/lecturerTextView"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="10dp">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/nextDayTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#6c6c6c"
-                android:text="ოთხშაბათი"
-                android:layout_marginRight="15dp"
-                android:textStyle="bold"
-                android:fontFamily="@font/bpg_square"
-                android:textSize="16sp"
-                android:layout_above="@id/lectureRoomTextView"
-                android:layout_alignParentRight="true">
-
-            </TextView>
-
-            <Button
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/ic_alert_on"
-                android:layout_alignParentRight="true"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp">
-
-            </Button>
-
-        </RelativeLayout>
-
-        <!--    <RelativeLayout
-                android:id="@+id/scheduleFullLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/logoutButton"
-                android:layout_marginLeft="15dp">
-
-                <TextView
-                    android:id="@+id/scheduleFullTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/bpg_square"
-                    android:textStyle="bold"
-                    android:text="ცხრილი"
-                    android:textSize="22sp"
-                    android:textColor="#000">
-
-                </TextView>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/scheduleFullTextView">
-
-                </androidx.recyclerview.widget.RecyclerView>
-
-            </RelativeLayout>-->
-        <Button
-            android:id="@+id/logoutButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/squared_button"
-            android:text="გამოსვლა(დროებით აქ იყოს)"
+            android:textColor="@android:color/background_light"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:fontFamily="@font/bpg_square"
-            android:textColor="#fff"
-            android:layout_alignParentBottom="true">
+            tools:text="სათაური" />
 
-        </Button>
-    </RelativeLayout>
+        <ImageButton
+            android:id="@+id/toolbarButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            tools:background="@drawable/ic_mails" />
+    </FrameLayout>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigationView"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:menu="@menu/drawer_items" />
+    <fragment
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@id/nav_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarLayout"
+        app:navGraph="@navigation/nav_graph" />
 
-</androidx.drawerlayout.widget.DrawerLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        app:itemIconTint="@android:color/black"
+        app:labelVisibilityMode="unlabeled"
+        android:background="?android:attr/windowBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

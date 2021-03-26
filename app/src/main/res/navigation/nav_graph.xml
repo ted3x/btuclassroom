@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.c0d3in3.btuclassroom.ui.login.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_dashboardFragment"
+            app:destination="@id/navigation_dashboard"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.c0d3in3.btuclassroom.ui.dashboard.DashboardFragment"
+        android:label="DashboardFragment" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_mailsFragment"
+            app:destination="@id/navigation_mails" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_scheduleFragment"
+            app:destination="@id/navigation_schedule" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_coursesFragment"
+            app:destination="@id/navigation_courses" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_mails"
+        android:name="com.c0d3in3.btuclassroom.ui.mail.MailsFragment"
+        android:label="mails_fragment"
+        tools:layout="@layout/mails_fragment" >
+        <action
+            android:id="@+id/action_mailsFragment_to_mailDetailFragment"
+            app:destination="@id/mailDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mailDetailFragment"
+        android:name="com.c0d3in3.btuclassroom.ui.mail_detail.MailDetailFragment"
+        android:label="MailDetailFragment" >
+        <argument
+            android:name="mail"
+            app:argType="com.c0d3in3.btuclassroom.model.Mail" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_schedule"
+        android:name="com.c0d3in3.btuclassroom.ui.schedule.ScheduleFragment"
+        android:label="schedule_fragment"
+        tools:layout="@layout/schedule_fragment" />
+    <fragment
+        android:id="@+id/navigation_courses"
+        android:name="com.c0d3in3.btuclassroom.ui.courses.CoursesFragment"
+        android:label="courses_fragment"
+        tools:layout="@layout/courses_fragment" />
+</navigation>
